@@ -24,10 +24,10 @@ function swap (direction) {
 	}
 	let toItem = toPane.getActiveItem();
 	
-	if (toPane.getItems().length === 0) {
+	if (toPane.getItems().length === 1) {
 		toPane.addItem(atom.workspace.buildTextEditor());
 	}
-	if (fromPange.getItems().length === 0) {
+	if (fromPane.getItems().length === 1) {
 		fromPane.addItem(atom.workspace.buildTextEditor());
 	}
 	
