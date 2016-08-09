@@ -7,11 +7,9 @@
       "spell-check"
       "whitespace"
       "tree-view"
-      "swap-panes"
       "wrap-guide"
     ]
     packagesWithKeymapsDisabled: [
-      "swap-panes"
       "symbols-view"
     ]
     themes: [
