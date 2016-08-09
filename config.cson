@@ -8,6 +8,7 @@
       "whitespace"
       "tree-view"
       "wrap-guide"
+      "tabs"
     ]
     packagesWithKeymapsDisabled: [
       "symbols-view"

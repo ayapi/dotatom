@@ -1,5 +1,9 @@
 "use babel";
 
+atom.workspace.onDidOpen((ev) => {
+  ev.pane.destroyInactiveItems();
+});
+
 atom.commands.add('atom-workspace', 'custom:split-right-and-new-editor', () => {
 	let pane = atom.workspace.getActivePane();
 	pane.splitRight();
