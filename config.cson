@@ -1,0 +1,37 @@
+"*":
+  "autocomplete-plus": {}
+  "bracket-matcher": {}
+  core:
+    disabledPackages: [
+      "bracket-matcher"
+      "spell-check"
+      "whitespace"
+      "tree-view"
+      "swap-panes"
+      "wrap-guide"
+    ]
+    packagesWithKeymapsDisabled: [
+      "swap-panes"
+      "symbols-view"
+    ]
+    themes: [
+      "atom-dark-ui"
+      "monokai"
+    ]
+  "cursor-blink-interval":
+    cursorBlinkInterval: 1200
+  editor:
+    fontFamily: "Ricty"
+    invisibles: {}
+    showIndentGuide: true
+    softTabs: false
+  "keyboard-localization":
+    useKeyboardLayout: "ja_JP"
+    useKeyboardLayoutFromPath: "~/.atom/keyboard-localization.json"
+  "markdown-preview":
+    liveUpdate: false
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: false
+    removeTrailingWhitespace: false
