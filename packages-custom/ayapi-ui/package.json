@@ -1,0 +1,10 @@
+{
+  "name": "ayapi-ui",
+  "theme": "ui",
+  "version": "0.0.1",
+  "description": "A black UI theme for Atom",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.40.0"
+  }
+}

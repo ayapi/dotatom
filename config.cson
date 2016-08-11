@@ -14,7 +14,7 @@
       "symbols-view"
     ]
     themes: [
-      "atom-dark-ui"
+      "ayapi-ui"
       "monokai"
     ]
   "cursor-blink-interval":

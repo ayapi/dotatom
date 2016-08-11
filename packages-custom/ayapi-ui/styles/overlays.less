@@ -1,0 +1,40 @@
+@import "ui-variables";
+
+atom-panel.modal, .overlay, atom-text-editor::shadow atom-overlay {
+  color: @text-color;
+  background-color: @overlay-background-color;
+  padding: @component-padding;
+  border: 1px solid @overlay-border-color;
+  
+  
+  atom-text-editor[mini] {
+    margin-bottom: @component-padding;
+  }
+  
+  .select-list ol.list-group,
+  &.select-list ol.list-group {
+
+    background-color: lighten(@overlay-background-color, 3%);
+
+    li {
+      padding: 0 5px;
+      border-bottom: 1px solid @base-border-color;
+
+      &.two-lines { padding: @component-padding/2 @component-padding; }
+
+      .status.icon {
+        float: right;
+        margin-left: @component-icon-padding;
+        &:before {
+          margin-right: 0;
+        }
+      }
+
+      &.selected {
+        .status.icon {
+          color: @text-color-selected;
+        }
+      }
+    }
+  }
+}
