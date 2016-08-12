@@ -1,0 +1,26 @@
+{
+  "context-menu": {
+    "atom-text-editor": [
+      {
+        "label": "Toggle ayapi-term",
+        "command": "ayapi-term:toggle"
+      }
+    ]
+  },
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "ayapi-term",
+          "submenu": [
+            {
+              "label": "Toggle",
+              "command": "ayapi-term:toggle"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
