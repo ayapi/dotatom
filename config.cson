@@ -20,10 +20,11 @@
   "cursor-blink-interval":
     cursorBlinkInterval: 1200
   editor:
-    fontFamily: "Ricty"
+    fontSize: 9
     invisibles: {}
     showIndentGuide: true
-    softTabs: false
+    softWrap: true
+    undoGroupingInterval: 1
   "keyboard-localization":
     useKeyboardLayout: "ja_JP"
     useKeyboardLayoutFromPath: "~/.atom/keyboard-localization.json"
