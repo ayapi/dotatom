@@ -4,6 +4,25 @@ atom.workspace.onDidOpen((ev) => {
   ev.pane.destroyInactiveItems();
 });
 
+function scroll(amount) {
+  let pane = atom.workspace.getActivePane();
+  if (!pane) {
+    return;
+  }
+  let item = pane.getActiveItem();
+  if (!item) {
+    return;
+  }
+  item.setScrollTop(item.getScrollTop() + item.getLineHeightInPixels() * amount);
+}
+
+atom.commands.add('atom-pane', 'custom:scroll-down', () => {
+  scroll(3);
+});
+atom.commands.add('atom-pane', 'custom:scroll-up', () => {
+  scroll(-3);
+});
+
 atom.commands.add('atom-workspace', 'custom:split-right-and-new-editor', () => {
 	let pane = atom.workspace.getActivePane();
 	pane.splitRight();

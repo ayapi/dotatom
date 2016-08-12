@@ -5,6 +5,8 @@
 	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
 	
 'atom-workspace atom-pane':
+	'ctrl-down': 'custom:scroll-down'
+	'ctrl-up': 'custom:scroll-up'
 	'alt-left': 'window:focus-pane-on-left'
 	'alt-right': 'window:focus-pane-on-right'
 	'alt-up': 'window:focus-pane-above'
