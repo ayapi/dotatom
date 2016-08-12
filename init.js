@@ -57,3 +57,24 @@ atom.commands.add('atom-workspace', 'custom:swap-pane-with-down', function () {
 	swapPane.call(this, 'Below');
 });
 
+function movePane (direction) {
+  let fromPane = atom.workspace.getActivePane();
+	let fromItem = fromPane.getActiveItem();
+	this[`focusPaneView${direction}`]();
+  let collisionPane = atom.workspace.getActivePane();
+  
+  if (fromPane.id === collisionPane.id) {
+		return;
+	}
+	
+  collisionPane.splitDown();
+  let toPane = atom.workspace.getActivePane();
+  fromPane.moveItemToPane(fromItem, toPane, 0);
+}
+
+atom.commands.add('atom-workspace', 'custom:move-pane-to-right', function () {
+	movePane.call(this, 'OnRight');
+});
+atom.commands.add('atom-workspace', 'custom:move-pane-to-left', function () {
+	movePane.call(this, 'OnLeft');
+});

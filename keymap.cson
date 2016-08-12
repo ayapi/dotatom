@@ -14,6 +14,8 @@
 	'ctrl-alt-left': 'custom:swap-pane-with-left'
 	'ctrl-alt-up' : 'custom:swap-pane-with-up'
 	'ctrl-alt-down' : 'custom:swap-pane-with-down'
+	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
+	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
 	
 'atom-workspace atom-text-editor':
 	'alt-left': 'unset!'
