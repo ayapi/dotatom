@@ -1,6 +1,6 @@
 'atom-workspace':
 	'alt-shift-|': 'custom:split-right-and-new-editor'
-	'alt-shift-=': 'custom:split-bottom-and-new-editor'
+	'alt-shift-=': 'custom:split-down-and-new-editor'
 
 'atom-workspace atom-pane':
 	'alt-left': 'window:focus-pane-on-left'
@@ -10,10 +10,10 @@
 	'alt-x' : 'pane:close'
 	'alt--' : 'pane:decrease-size'
 	'alt-+' : 'pane:increase-size'
-	'ctrl-alt-right': 'custom:swap-right'
-	'ctrl-alt-left': 'custom:swap-left'
-	'ctrl-alt-up' : 'custom:swap-up'
-	'ctrl-alt-down' : 'custom:swap-down'
+	'ctrl-alt-right': 'custom:swap-pane-with-right'
+	'ctrl-alt-left': 'custom:swap-pane-with-left'
+	'ctrl-alt-up' : 'custom:swap-pane-with-up'
+	'ctrl-alt-down' : 'custom:swap-pane-with-down'
 	
 'atom-workspace atom-text-editor':
 	'alt-left': 'unset!'

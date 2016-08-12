@@ -10,13 +10,13 @@ atom.commands.add('atom-workspace', 'custom:split-right-and-new-editor', () => {
 	atom.workspace.open();
 });
 
-atom.commands.add('atom-workspace', 'custom:split-bottom-and-new-editor', () => {
+atom.commands.add('atom-workspace', 'custom:split-down-and-new-editor', () => {
 	let pane = atom.workspace.getActivePane();
 	pane.splitDown();
 	atom.workspace.open();
 });
 
-function swap (direction) {
+function swapPane (direction) {
 	let fromPane = atom.workspace.getActivePane();
 	let fromItem = fromPane.getActiveItem();
 	this[`focusPaneView${direction}`]();
@@ -44,15 +44,16 @@ function swap (direction) {
 	fromPane.destroyInactiveItems();
 }
 
-atom.commands.add('atom-workspace', 'custom:swap-right', function () {
-	swap.call(this, 'OnRight');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-right', function () {
+	swapPane.call(this, 'OnRight');
 });
-atom.commands.add('atom-workspace', 'custom:swap-left', function () {
-	swap.call(this, 'OnLeft');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-left', function () {
+	swapPane.call(this, 'OnLeft');
 });
-atom.commands.add('atom-workspace', 'custom:swap-up', function () {
-	swap.call(this, 'Above');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-up', function () {
+	swapPane.call(this, 'Above');
 });
-atom.commands.add('atom-workspace', 'custom:swap-down', function () {
-	swap.call(this, 'Below');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-down', function () {
+	swapPane.call(this, 'Below');
 });
+
