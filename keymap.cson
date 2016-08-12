@@ -1,7 +1,9 @@
 'atom-workspace':
 	'alt-shift-|': 'custom:split-right-and-new-editor'
 	'alt-shift-=': 'custom:split-down-and-new-editor'
-
+	'ctrl-h': 'project-find:show'
+	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
+	
 'atom-workspace atom-pane':
 	'alt-left': 'window:focus-pane-on-left'
 	'alt-right': 'window:focus-pane-on-right'
