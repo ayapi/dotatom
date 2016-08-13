@@ -2,6 +2,7 @@
 import { Task, CompositeDisposable } from 'atom';
 import path from 'path';
 import Terminal from 'xterm';
+import fit from 'xterm/addons/fit/fit';
 
 export default class AyapiTermView {
   constructor(serializedState) {
@@ -16,7 +17,11 @@ export default class AyapiTermView {
     this.shell = 'zsh';
     this.args = [];
     this.paneId = -1;
+    this.cols = 60;
+    this.rows = 5;
     this.id = serializedState.id;
+    
+    this.watcher = null;
   }
 
   // Returns an object that can be retrieved when package is activated
@@ -26,12 +31,15 @@ export default class AyapiTermView {
       paneId: this.paneId,
       pwd: this.pwd,
       shell: this.shell,
-      args: this.args
+      args: this.args,
+      cols: this.cols,
+      rows: this.rows
     }
   }
 
   // Tear down any state and detach
   destroy() {
+    this.detachWatcher();
     this.subscriptions.dispose();
     this.subscriptionForResize.dispose();
     if (this.ptyProcess) {
@@ -47,35 +55,16 @@ export default class AyapiTermView {
     return this.element;
   }
   
-  setPane() {
-    let pane = atom.workspace.paneForItem(this);
-    this.paneId = pane.id;
-    this.subscriptionForResize.add(
-      pane.onDidChangeFlexScale((scale) => {
-        this.resizeTerminalToView();
-      })
-    );
-    this.subscriptionForResize.add(
-      pane.onDidRemoveItem((ev) => {
-        let {item} = ev;
-        if (item.id === this.id) {
-          this.subscriptionForResize.dispose();
-        }
-      })
-    );
-  }
-  
   displayTerminal() {
-    let {cols, rows} = this.getDimensions();
     this.ptyProcess = this.forkPtyProcess();
     this.terminal = new Terminal({
       scrollback: 2000,
-      cols: cols,
-      rows: rows,
       cursorBlink: true
     });
-    this.attachListeners();
     this.terminal.open(this.element);
+    this.terminal.fit();
+    this.attachListeners();
+    this.attachWatcher();
   }
   
   forkPtyProcess() {
@@ -87,46 +76,17 @@ export default class AyapiTermView {
     );
   }
   
-  getDimensions() {
-    let cols, rows, fakeCol;
-    let fakeRow = document.createElement('div');
-    let fakeRowSpan = document.createElement('span');
-    fakeRowSpan.innerHTML = '&nbsp;';
-    fakeRow.appendChild(fakeRowSpan);
-    
-    if (this.terminal) {
-      this.element.appendChild(fakeRow);
-      fakeCol = fakeRow.children[0].getBoundingClientRect();
-      cols = Math.floor(this.element.clientWidth / (fakeCol.width || 9));
-      rows = Math.floor(this.element.clientHeight / (fakeCol.height || 20));
-      
-      // this.rowHeight = fakeCol.height;
-      fakeRow.remove();
-    } else {
-      cols = Math.floor(this.element.clientWidth / 9);
-      rows = Math.floor(this.element.clientHeight / 20);
-    }
-    console.log(cols, rows);
-    return {
-      cols: cols,
-      rows: rows
-    };
-  }
-  
-  resizeTerminalToView() {
-    let {cols, rows} = this.getDimensions();
-    
-    if (!(cols > 0 && rows > 0)) {
-      return;
-    }
+  fit() {
     if (!this.terminal) {
       return;
     }
-    if (this.terminal.rows === rows && this.terminal.cols === cols) {
-      return;
+    let {cols, rows} = this.terminal.proposeGeometry();
+    if (this.cols !== cols || this.rows !== rows) {
+      this.cols = cols;
+      this.rows = rows;
+      this.terminal.resize(cols, rows);
+      this.resize(cols, rows);
     }
-    this.resize(cols, rows);
-    this.terminal.resize(cols, rows);
   }
   
   attachListeners() {
@@ -145,9 +105,16 @@ export default class AyapiTermView {
     this.terminal.on("title", (title) => {
       this.title = title;
     });
-    this.terminal.once("open", () => {
-      this.resizeTerminalToView();
-    });
+  }
+  
+  attachWatcher() {
+    this.watcher = setInterval(() => {
+      this.fit();
+    }, 500);
+  }
+  
+  detachWatcher() {
+    clearInterval(this.watcher);
   }
   
   input(data) {

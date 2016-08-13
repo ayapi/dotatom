@@ -29,7 +29,7 @@ export default {
       atom.workspace.onDidAddPaneItem((ev) => {
         let {item, pane} = ev;
         if (item.constructor.name === 'AyapiTermView') {
-          item.setPane();
+          item.paneId = pane.id;
         }
       })
     );
