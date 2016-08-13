@@ -62,8 +62,8 @@ export default class AyapiTermView {
       cursorBlink: true
     });
     this.terminal.open(this.element);
-    this.terminal.fit();
     this.attachListeners();
+    this.fit();
     this.attachWatcher();
   }
   
@@ -121,7 +121,6 @@ export default class AyapiTermView {
     if (this.ptyProcess.childProcess == null) {
       return;
     }
-    // this.terminal.stopScrolling();
     return this.ptyProcess.send({
       event: 'input',
       text: data
@@ -144,11 +143,6 @@ export default class AyapiTermView {
       return;
     }
     this.terminal.focus();
-    if (this.terminal._textarea) {
-      this.terminal._textarea.focus();
-    } else {
-      this.terminal.element.focus();
-    }
   }
   
   blur() {
@@ -156,6 +150,5 @@ export default class AyapiTermView {
       return;
     }
     this.terminal.blur();
-    this.terminal.element.blur();
   }
 }

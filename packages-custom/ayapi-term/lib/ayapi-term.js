@@ -56,6 +56,5 @@ export default {
     pane.addItem(view);
     pane.activateItem(view);
     view.displayTerminal();
-    view.focus();
   }
 };
