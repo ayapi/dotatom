@@ -25,9 +25,8 @@
     showIndentGuide: true
     softWrap: true
     undoGroupingInterval: 1
-  "keyboard-localization":
-    useKeyboardLayout: "ja_JP"
-    useKeyboardLayoutFromPath: "~/.atom/keyboard-localization.json"
+  "exception-reporting":
+    userId: "d82875f5-8c23-7271-71b1-89655f81fd84"
   "markdown-preview":
     liveUpdate: false
   welcome:

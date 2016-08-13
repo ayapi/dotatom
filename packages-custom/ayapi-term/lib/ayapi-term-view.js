@@ -1,5 +1,5 @@
 'use babel';
-import { Task, CompositeDisposable } from 'atom';
+import { Task, CompositeDisposable, Disposable } from 'atom';
 import path from 'path';
 import Terminal from 'xterm';
 import fit from 'xterm/addons/fit/fit';
@@ -9,9 +9,16 @@ export default class AyapiTermView {
     // Create root element
     this.element = document.createElement('div');
     this.element.classList.add('ayapi-term');
+    this.element.setAttribute('tabindex', '-1');
 
     this.subscriptions = new CompositeDisposable();
-    this.subscriptionForResize = new CompositeDisposable();
+    
+    this.element.addEventListener('command', this.handleCommand.bind(this));
+    this.subscriptions.add(
+      new Disposable(() => {
+        this.element.removeEventListener('command', this.handleCommand.bind(this));
+      })
+    );
     
     this.pwd = path.resolve('~/.atom');
     this.shell = 'zsh';
@@ -41,7 +48,6 @@ export default class AyapiTermView {
   destroy() {
     this.detachWatcher();
     this.subscriptions.dispose();
-    this.subscriptionForResize.dispose();
     if (this.ptyProcess) {
       this.ptyProcess.terminate();
     }
@@ -65,6 +71,9 @@ export default class AyapiTermView {
     this.attachListeners();
     this.fit();
     this.attachWatcher();
+    this.terminal.attachCustomKeydownHandler(
+      this.handleKeymapsOnTerminal.bind(this)
+    );
   }
   
   forkPtyProcess() {
@@ -113,6 +122,20 @@ export default class AyapiTermView {
     }, 500);
   }
   
+  handleKeymapsOnTerminal(ev) {
+    let keystroke = atom.keymaps.keystrokeForKeyboardEvent(ev);
+    let bindings = atom.keymaps.findKeyBindings({
+      keystrokes: keystroke,
+      target: this.element.querySelector('.xterm')
+    }).filter((binding) => {
+      return binding.selector.endsWith('.ayapi-term .xterm')
+    });
+    if (bindings.length > 0) {
+      return false;
+    }
+    return true;
+  }
+  
   detachWatcher() {
     clearInterval(this.watcher);
   }
@@ -146,9 +169,21 @@ export default class AyapiTermView {
   }
   
   blur() {
+    this.element.focus();
+  }
+  
+  scroll(amount) {
     if (!this.terminal) {
       return;
     }
-    this.terminal.blur();
+    this.terminal.scrollDisp(amount);
+  }
+  
+  handleCommand(ev) {
+    switch(ev.detail.type) {
+      case 'scroll':
+        this.scroll(ev.detail.amount);
+      break;
+    }
   }
 }

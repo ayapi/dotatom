@@ -38,7 +38,7 @@ atom.commands.add('atom-workspace', 'custom:split-down-and-new-editor', () => {
 function swapPane (direction) {
 	let fromPane = atom.workspace.getActivePane();
 	let fromItem = fromPane.getActiveItem();
-	this[`focusPaneView${direction}`]();
+	document.querySelector('atom-workspace')[`focusPaneView${direction}`]();
 	let toPane = atom.workspace.getActivePane();
 	
 	console.log(fromPane.id, toPane.id);
@@ -63,23 +63,23 @@ function swapPane (direction) {
 	fromPane.destroyInactiveItems();
 }
 
-atom.commands.add('atom-workspace', 'custom:swap-pane-with-right', function () {
-	swapPane.call(this, 'OnRight');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-right', () => {
+	swapPane('OnRight');
 });
-atom.commands.add('atom-workspace', 'custom:swap-pane-with-left', function () {
-	swapPane.call(this, 'OnLeft');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-left', () => {
+	swapPane('OnLeft')
 });
-atom.commands.add('atom-workspace', 'custom:swap-pane-with-up', function () {
-	swapPane.call(this, 'Above');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-up', () => {
+	swapPane('Above');
 });
-atom.commands.add('atom-workspace', 'custom:swap-pane-with-down', function () {
-	swapPane.call(this, 'Below');
+atom.commands.add('atom-workspace', 'custom:swap-pane-with-down', () => {
+	swapPane('Below');
 });
 
 function movePane (direction) {
   let fromPane = atom.workspace.getActivePane();
 	let fromItem = fromPane.getActiveItem();
-	this[`focusPaneView${direction}`]();
+	document.querySelector('atom-workspace')[`focusPaneView${direction}`]();
   let collisionPane = atom.workspace.getActivePane();
   
   if (fromPane.id === collisionPane.id) {
@@ -91,9 +91,10 @@ function movePane (direction) {
   fromPane.moveItemToPane(fromItem, toPane, 0);
 }
 
-atom.commands.add('atom-workspace', 'custom:move-pane-to-right', function () {
-	movePane.call(this, 'OnRight');
+atom.commands.add('atom-workspace', 'custom:move-pane-to-right', () => {
+	movePane('OnRight');
 });
-atom.commands.add('atom-workspace', 'custom:move-pane-to-left', function () {
-	movePane.call(this, 'OnLeft');
+atom.commands.add('atom-workspace', 'custom:move-pane-to-left', () => {
+	movePane('OnLeft');
 });
+

@@ -17,7 +17,23 @@ export default {
     this.subscriptions.add(atom.commands.add('atom-workspace', {
       'ayapi-term:open': () => this.open()
     }));
-    
+    this.subscriptions.add(atom.commands.add('atom-workspace .ayapi-term', {
+      'ayapi-term:scroll-down': (ev) => {
+        ev.currentTarget.dispatchEvent(
+          new CustomEvent('command', {
+            detail: {type: 'scroll', amount: 3}
+          })
+        );
+      },
+      'ayapi-term:scroll-up': (ev) => {
+        ev.currentTarget.dispatchEvent(
+          new CustomEvent('command', {
+            detail: {type: 'scroll', amount: -3}
+          })
+        );
+      }
+    }));
+        
     this.subscriptions.add(
       atom.workspace.onDidStopChangingActivePaneItem((item) => {
         if (item.constructor.name === 'AyapiTermView') {

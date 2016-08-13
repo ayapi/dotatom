@@ -1,6 +1,15 @@
+'atom-workspace atom-text-editor':
+	'alt-left': 'unset!'
+	'alt-right': 'unset!'
+
+'atom-workspace atom-text-editor:not([mini])':
+	'ctrl-down': 'unset!'
+	'ctrl-up': 'unset!'
+
 'atom-workspace':
-	'alt-shift-|': 'custom:split-right-and-new-editor'
-	'alt-shift-=': 'custom:split-down-and-new-editor'
+	# alt-= on JIS
+	'alt-_': 'custom:split-down-and-new-editor'
+	'alt-|': 'custom:split-right-and-new-editor'
 	'ctrl-h': 'project-find:show'
 	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
 	
@@ -21,10 +30,19 @@
 	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
 	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
 	
-'atom-workspace atom-text-editor':
-	'alt-left': 'unset!'
-	'alt-right': 'unset!'
-
-'atom-workspace atom-text-editor:not([mini])':
-	'ctrl-down': 'unset!'
-	'ctrl-up': 'unset!'
+'atom-workspace .ayapi-term .xterm':
+	'ctrl-down': 'ayapi-term:scroll-down'
+	'ctrl-up': 'ayapi-term:scroll-up'
+	'alt-left': 'window:focus-pane-on-left'
+	'alt-right': 'window:focus-pane-on-right'
+	'alt-up': 'window:focus-pane-above'
+	'alt-down': 'window:focus-pane-below'
+	'alt-x': 'pane:close'
+	'alt--': 'pane:decrease-size'
+	'alt-+': 'pane:increase-size'
+	'ctrl-alt-right': 'custom:swap-pane-with-right'
+	'ctrl-alt-left': 'custom:swap-pane-with-left'
+	'ctrl-alt-up' : 'custom:swap-pane-with-up'
+	'ctrl-alt-down' : 'custom:swap-pane-with-down'
+	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
+	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
