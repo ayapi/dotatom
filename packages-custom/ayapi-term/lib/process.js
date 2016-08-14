@@ -14,7 +14,9 @@ module.exports = function(pwd, shell, args, options) {
   ptyProcess = pty.fork(shell, args, {
     cwd: pwd,
     env: process.env,
-    name: 'xterm-256color'
+    name: 'xterm-256color',
+    cols: options.cols,
+    rows: options.rows
   });
   title = shell = path.basename(shell);
   // emitTitle = _.throttle(function() {

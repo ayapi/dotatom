@@ -1,9 +1,9 @@
 {
   "context-menu": {
-    "atom-text-editor": [
+    "atom-pane": [
       {
-        "label": "Toggle ayapi-term",
-        "command": "ayapi-term:toggle"
+        "label": "Open ayapi-term",
+        "command": "ayapi-term:open"
       }
     ]
   },
@@ -15,8 +15,8 @@
           "label": "ayapi-term",
           "submenu": [
             {
-              "label": "Toggle",
-              "command": "ayapi-term:toggle"
+              "label": "Open",
+              "command": "ayapi-term:open"
             }
           ]
         }
