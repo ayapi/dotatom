@@ -1,7 +1,24 @@
 "use babel";
 
 atom.workspace.onDidOpen((ev) => {
-  ev.pane.destroyInactiveItems();
+  let {item, pane} = ev;
+  let items = pane.getItems();
+  items.forEach((pitem) => {
+    if (
+      pitem != item
+      && pitem.constructor.name == 'TextEditor'
+      && pitem.isEmpty()
+      && !pitem.isModified()
+      && pitem.getTitle() == 'untitled'
+    ) {
+      pane.destroyItem(pitem);
+    }
+  });
+  items = pane.getItems();
+  if (items.length > 1) {
+    let newPane = pane.splitDown();
+    pane.moveItemToPane(item, newPane, 0);
+  }
 });
 
 function moveModalPanel(panel) {
