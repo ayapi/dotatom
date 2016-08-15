@@ -9,6 +9,30 @@ const Pane = requireAtomCoreModule('pane');
 const PaneAxis = requireAtomCoreModule('pane-axis');
 
 
+Function.prototype.clone = function() {
+  var that = this;
+  var temp = function temporary() { return that.apply(this, arguments); };
+  for(var key in this) {
+    if (this.hasOwnProperty(key)) {
+      temp[key] = this[key];
+    }
+  }
+  return temp;
+};
+
+function fixSoftWrapToWordBreakable(editor) {
+  editor.displayLayer.reset({
+    isWrapBoundary: function() { return true; }
+  });
+  if (editor.displayLayer.___reset) return;
+  editor.displayLayer.___reset = editor.displayLayer.reset.clone();
+  editor.displayLayer.reset = function(params) {
+    delete params.isWrapBoundary;
+    this.___reset(params);
+  }
+}
+atom.workspace.observeTextEditors(fixSoftWrapToWordBreakable);
+
 atom.workspace.onDidOpen((ev) => {
   let {item, pane} = ev;
   let items = pane.getItems();
