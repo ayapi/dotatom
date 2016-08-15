@@ -10,20 +10,14 @@
 
 atom-pane-container {
   atom-pane {
-    background-color: lighten(@app-background-color, 4%);
+    border: 1px solid @base-border-color;
 
-    &:focus {
-      background-color: @app-background-color;
+    &.active {
+      border: 1px solid lighten(@base-border-color, 15%);
     }
   }
-
-  atom-pane-axis.horizontal > * {
-    border-right: 2px solid @pane-item-border-color;
-    &:last-child { border-right: none; }
-  }
-
-  atom-pane-axis.vertical > * {
-    border-bottom: 2px solid @pane-item-border-color;
-    &:last-child { border-bottom: none; }
+  
+  atom-pane-resize-handle {
+    display: none;
   }
 }
