@@ -3,7 +3,6 @@
   "bracket-matcher": {}
   core:
     disabledPackages: [
-      "bracket-matcher"
       "spell-check"
       "whitespace"
       "tree-view"

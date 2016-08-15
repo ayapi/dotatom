@@ -19,6 +19,7 @@ atom-text-editor[mini].is-focused, atom-text-editor[mini].is-focused::shadow {
 
 // FIXME: these should go in syntax themes?
 atom-text-editor, atom-text-editor::shadow {
+  color: #ccc;
   background-color: @app-background-color;
   .selection .region {
     background-color: rgba(100,100,100,.5);
@@ -30,5 +31,9 @@ atom-text-editor, atom-text-editor::shadow {
     .line-number .icon-right {
       padding: 0;
     }
+  }
+  .bracket-matcher .region {
+    background-color: rgba(100,100,100,.4);
+    border-bottom: none;
   }
 }
