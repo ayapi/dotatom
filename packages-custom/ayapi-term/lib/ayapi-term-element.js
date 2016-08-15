@@ -123,11 +123,17 @@ class AyapiTermElement extends HTMLElement {
   }
   
   destroy() {
+    if (this.subscriptions) {
+      this.subscriptions.dispose();
+    }
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
     if (this.terminal) {
       this.terminal.destroy();
+    }
+    if (this.model) {
+      this.model.destroy();
     }
   }
 }

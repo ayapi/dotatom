@@ -42,28 +42,14 @@ export default {
     
     if (state && state.models) {
       state.models.forEach((s) => {
+        let view = this.views.get(s.uri);
+        if (!view) return;
+        
         let model = atom.deserializers.deserialize(s);
         this.models.push(model);
-        
-        let view = this.views.get(model.uri);
-        if (view) {
-          view.setModel(model);
-        }
+        view.setModel(model);
       });
     }
-    
-    this.subscriptions.add(
-      atom.workspace.onWillDestroyPaneItem((item) => {
-        if (item && item.constructor.name === 'AyapiTermView') {
-          item.destroy();
-          views.delete(item.uri);
-          
-          let i = this.models.findIndex((model) => model.uri == item.uri);
-          models[i].destroy();
-          models.splice(i, 1);
-        }
-      })
-    );
     
     this.subscriptions.add(
       atom.workspace.onDidStopChangingActivePaneItem((item) => {
