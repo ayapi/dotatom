@@ -4,14 +4,11 @@ import Terminal from 'xterm';
 import fit from 'xterm/addons/fit/fit';
 
 class AyapiTermElement extends HTMLElement {
-  set title(value) {
-    // swallow to avoid tooltip
-  }
   initialize(state) {
     this.emitter = new Emitter();
     
     this.uri = state.uri;
-    this.title = state.title;
+    this._title = state.title;
     
     this.classList.add('ayapi-term');
     this.setAttribute('tabindex', '-1');
@@ -55,7 +52,7 @@ class AyapiTermElement extends HTMLElement {
       this.model.sendInput(data);
     });
     this.terminal.on("title", (title) => {
-      this.title = title;
+      this._title = title;
       this.emitter.emit('did-change-title', title);
     });
   }
@@ -110,7 +107,7 @@ class AyapiTermElement extends HTMLElement {
   }
   
   getTitle() {
-    return this.title;
+    return this._title;
   }
   
   getURI() {
