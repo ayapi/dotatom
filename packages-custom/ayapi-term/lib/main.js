@@ -1,8 +1,8 @@
 'use babel';
 
 import url from 'url';
-import AyapiTermElement from './ayapi-term-view';
-import AyapiTermModel from './ayapi-term-model';
+import AyapiTermElement from './ayapi-term-element';
+import AyapiTermModel from './ayapi-term';
 import { CompositeDisposable } from 'atom';
 
 atom.deserializers.add(AyapiTermModel);

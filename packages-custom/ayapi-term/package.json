@@ -1,6 +1,6 @@
 {
   "name": "ayapi-term",
-  "main": "./lib/ayapi-term",
+  "main": "./lib/main.js",
   "version": "0.0.1",
   "description": "simple terminal for atom",
   "keywords": [],
