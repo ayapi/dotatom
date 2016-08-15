@@ -1,10 +1,8 @@
 .ayapi-term {
   line-height: 16px;
   
-  .terminal {
-    background-color: transparent;
-    color: #CCC;
-  }
+  @background: transparent;
+  @foreground: #ccc;
   
   // xterm monokai theme
   // !black darkgray
@@ -31,6 +29,42 @@
   // !gray white
   @color7:    #CCCCCC;
   @color15:   #F8F8F2;
+  
+  .terminal {
+    background-color: @background;
+    color: @foreground;
+  }
+  
+  .terminal .terminal-cursor {
+    background-color: @foreground;
+    color: @background;
+  }
+  
+  .terminal:not(.focus) .terminal-cursor {
+    outline: 1px solid @foreground;
+    outline-offset: -1px;
+    background-color: transparent;
+  }
+  
+  @keyframes blink-cursor {
+    0% {
+      background-color: @foreground;
+      color: @background;
+    }
+    50% {
+      background-color: @background;
+      color: @foreground;
+    }
+  }
+  
+  .terminal .composition-view {
+    background: @background;
+    color: @foreground;
+  }
+  
+  .terminal .xterm-viewport {
+    background-color: @background;
+  }
   
   .colors(15);
   .colors(@n, @i: 0) when (@i =< @n) {
