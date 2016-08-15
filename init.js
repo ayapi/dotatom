@@ -96,15 +96,15 @@ atom.commands.add('atom-pane', 'custom:scroll-up', () => {
 });
 
 atom.commands.add('atom-workspace', 'custom:split-right-and-new-editor', () => {
-	let pane = atom.workspace.getActivePane();
-	pane.splitRight();
-	atom.workspace.open();
+  let pane = atom.workspace.getActivePane();
+  pane.splitRight();
+  atom.workspace.open();
 });
 
 atom.commands.add('atom-workspace', 'custom:split-down-and-new-editor', () => {
-	let pane = atom.workspace.getActivePane();
-	pane.splitDown();
-	atom.workspace.open();
+  let pane = atom.workspace.getActivePane();
+  pane.splitDown();
+  atom.workspace.open();
 });
 
 atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', () => {
@@ -145,65 +145,65 @@ atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', 
 });
 
 function swapPane (direction) {
-	let fromPane = atom.workspace.getActivePane();
-	let fromItem = fromPane.getActiveItem();
-	document.querySelector('atom-workspace')[`focusPaneView${direction}`]();
-	let toPane = atom.workspace.getActivePane();
-	
-	console.log(fromPane.id, toPane.id);
-	if (fromPane.id === toPane.id) {
-		return;
-	}
-	let toItem = toPane.getActiveItem();
-	
-	if (toPane.getItems().length === 1) {
-		toPane.addItem(atom.workspace.buildTextEditor());
-	}
-	if (fromPane.getItems().length === 1) {
-		fromPane.addItem(atom.workspace.buildTextEditor());
-	}
-	
-	toPane.moveItemToPane(toItem, fromPane, 0);
-	fromPane.moveItemToPane(fromItem, toPane, 0);
-	
-	toPane.activateItem(fromItem);
-	toPane.destroyInactiveItems();
-	fromPane.activateItem(toItem);
-	fromPane.destroyInactiveItems();
+  let fromPane = atom.workspace.getActivePane();
+  let fromItem = fromPane.getActiveItem();
+  document.querySelector('atom-workspace')[`focusPaneView${direction}`]();
+  let toPane = atom.workspace.getActivePane();
+  
+  console.log(fromPane.id, toPane.id);
+  if (fromPane.id === toPane.id) {
+    return;
+  }
+  let toItem = toPane.getActiveItem();
+  
+  if (toPane.getItems().length === 1) {
+    toPane.addItem(atom.workspace.buildTextEditor());
+  }
+  if (fromPane.getItems().length === 1) {
+    fromPane.addItem(atom.workspace.buildTextEditor());
+  }
+  
+  toPane.moveItemToPane(toItem, fromPane, 0);
+  fromPane.moveItemToPane(fromItem, toPane, 0);
+  
+  toPane.activateItem(fromItem);
+  toPane.destroyInactiveItems();
+  fromPane.activateItem(toItem);
+  fromPane.destroyInactiveItems();
 }
 
 atom.commands.add('atom-workspace', 'custom:swap-pane-with-right', () => {
-	swapPane('OnRight');
+  swapPane('OnRight');
 });
 atom.commands.add('atom-workspace', 'custom:swap-pane-with-left', () => {
-	swapPane('OnLeft')
+  swapPane('OnLeft')
 });
 atom.commands.add('atom-workspace', 'custom:swap-pane-with-up', () => {
-	swapPane('Above');
+  swapPane('Above');
 });
 atom.commands.add('atom-workspace', 'custom:swap-pane-with-down', () => {
-	swapPane('Below');
+  swapPane('Below');
 });
 
 function movePane (direction) {
   let fromPane = atom.workspace.getActivePane();
-	let fromItem = fromPane.getActiveItem();
-	document.querySelector('atom-workspace')[`focusPaneView${direction}`]();
+  let fromItem = fromPane.getActiveItem();
+  document.querySelector('atom-workspace')[`focusPaneView${direction}`]();
   let collisionPane = atom.workspace.getActivePane();
   
   if (fromPane.id === collisionPane.id) {
-		return;
-	}
-	
+    return;
+  }
+  
   collisionPane.splitDown();
   let toPane = atom.workspace.getActivePane();
   fromPane.moveItemToPane(fromItem, toPane, 0);
 }
 
 atom.commands.add('atom-workspace', 'custom:move-pane-to-right', () => {
-	movePane('OnRight');
+  movePane('OnRight');
 });
 atom.commands.add('atom-workspace', 'custom:move-pane-to-left', () => {
-	movePane('OnLeft');
+  movePane('OnLeft');
 });
 
