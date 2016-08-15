@@ -1,5 +1,14 @@
 "use babel";
 
+const path = require('path');
+
+function requireAtomCoreModule(name) {
+  return require(path.join(atom.packages.resourcePath, 'src', name));
+}
+const Pane = requireAtomCoreModule('pane');
+const PaneAxis = requireAtomCoreModule('pane-axis');
+
+
 atom.workspace.onDidOpen((ev) => {
   let {item, pane} = ev;
   let items = pane.getItems();
@@ -72,6 +81,43 @@ atom.commands.add('atom-workspace', 'custom:split-down-and-new-editor', () => {
 	let pane = atom.workspace.getActivePane();
 	pane.splitDown();
 	atom.workspace.open();
+});
+
+atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', () => {
+  let pane = atom.workspace.getActivePane();
+  let newPane = new Pane({
+    applicationDelegate: pane.applicationDelegate,
+    notificationManager: pane.notificationManager,
+    deserializerManager: pane.deserializerManager,
+    config: pane.config
+  });
+  
+  let p = pane;
+  while(true) {
+    if (p.parent.constructor.name == 'PaneContainer') {
+      break;
+    }
+    p = p.parent;
+  }
+  
+  let target = p;
+  
+  let pname = p.constructor.name;
+  if (pname == 'Pane'
+      || (pname == 'PaneAxis' && p.orientation !== 'horizontal')) {
+    let parent = p.parent;
+    let newAxis = new PaneAxis({
+      orientation: 'horizontal',
+      children: [p]
+    });
+    parent.replaceChild(p, newAxis);
+    newAxis.setFlexScale(1);
+    p.setFlexScale(1);
+    target = newAxis;
+  }
+  target.addChild(newPane);
+  newPane.activate();
+  atom.workspace.open();
 });
 
 function swapPane (direction) {

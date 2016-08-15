@@ -9,7 +9,7 @@
 'atom-workspace':
 	# alt-= on JIS
 	'alt-_': 'custom:split-down-and-new-editor'
-	'alt-|': 'custom:split-right-and-new-editor'
+	'alt-|': 'custom:split-global-right-and-new-editor'
 	'ctrl-h': 'project-find:show'
 	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
 	
