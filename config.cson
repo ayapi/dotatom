@@ -2,6 +2,7 @@
   "autocomplete-plus": {}
   "bracket-matcher": {}
   core:
+    automaticallyUpdate: false
     disabledPackages: [
       "spell-check"
       "tree-view"
@@ -10,6 +11,7 @@
     packagesWithKeymapsDisabled: [
       "symbols-view"
     ]
+    projectHome: "/home/ayapi/.atom/packages-custom"
     themes: [
       "ayapi-ui"
       "monokai"
