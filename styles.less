@@ -1,3 +1,46 @@
 .ayapi-term {
   line-height: 16px;
+  
+  .terminal {
+    background-color: transparent;
+    color: #CCC;
+  }
+  
+  // xterm monokai theme
+  // !black darkgray
+  @color0:    #1B1D1E;
+  @color8:    #808080;
+  // !darkred red
+  @color1:    #FF0044;
+  @color9:    #F92672;
+  // !darkgreen green
+  @color2:    #A6E22E;
+  @color10:   #A6E22E;
+  // !darkyellow yellow
+  @color3:    #f4bf75;
+  @color11:   #E6DB74;
+  // !darkblue blue
+  @color4:    #266C98;
+  @color12:   #7070F0;
+  // !darkmagenta magenta
+  @color5:    #AC0CB1;
+  @color13:   #D63AE1;
+  // !darkcyan cyan
+  @color6:    #AE81FF;
+  @color14:   #66D9EF;
+  // !gray white
+  @color7:    #CCCCCC;
+  @color15:   #F8F8F2;
+  
+  .colors(15);
+  .colors(@n, @i: 0) when (@i =< @n) {
+    @color-var-name: "color@{i}";
+    .terminal .xterm-color-@{i} {
+      color: @@color-var-name;
+    }
+    .terminal .xterm-bg-color-@{i} {
+      background-color: @@color-var-name;
+    }
+    .colors(@n, (@i + 1));
+  }
 }
