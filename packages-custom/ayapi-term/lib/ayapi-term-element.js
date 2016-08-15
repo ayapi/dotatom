@@ -4,6 +4,9 @@ import Terminal from 'xterm';
 import fit from 'xterm/addons/fit/fit';
 
 class AyapiTermElement extends HTMLElement {
+  set title(value) {
+    // swallow to avoid tooltip
+  }
   initialize(state) {
     this.emitter = new Emitter();
     
