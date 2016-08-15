@@ -4,6 +4,28 @@ atom.workspace.onDidOpen((ev) => {
   ev.pane.destroyInactiveItems();
 });
 
+function moveModalPanel(panel) {
+  let activePane = atom.workspace.getActivePane();
+  let activePaneElement = atom.views.getView(activePane);
+  let rect = activePaneElement.getBoundingClientRect();
+  let panelElement = atom.views.getView(panel);
+  panelElement.style.top = Math.floor(rect.top) + 'px';
+  panelElement.style.left = Math.floor(rect.left) + 'px';
+  panelElement.style.width = Math.floor(rect.width) + 'px';
+}
+
+atom.workspace.panelContainers.modal.onDidAddPanel((params) => {
+  let {panel} = params;
+  if (panel.isVisible()) {
+    moveModalPanel(panel);
+  }
+  panel.onDidChangeVisible((visible) => {
+    if (visible) {
+      moveModalPanel(panel);
+    }
+  });
+});
+
 function scroll(amount) {
   let pane = atom.workspace.getActivePane();
   if (!pane) {
