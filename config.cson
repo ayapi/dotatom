@@ -4,7 +4,6 @@
   core:
     disabledPackages: [
       "spell-check"
-      "whitespace"
       "tree-view"
       "wrap-guide"
     ]
@@ -18,9 +17,13 @@
   "cursor-blink-interval":
     cursorBlinkInterval: 1200
   editor:
-    fontSize: 9
-    invisibles: {}
+    invisibles:
+      cr: "v"
+      eol: "｣"
+      space: "_"
+      tab: ">"
     showIndentGuide: true
+    showInvisibles: true
     softWrap: true
     undoGroupingInterval: 1
   "exception-reporting":
