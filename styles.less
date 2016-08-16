@@ -58,8 +58,13 @@
   }
   
   .terminal .composition-view {
-    background: @background;
+    background: #222;
     color: @foreground;
+    z-index: 2;
+  }
+  
+  .terminal .xterm-rows {
+    z-index: 0;
   }
   
   .terminal .xterm-viewport {
