@@ -28,8 +28,14 @@ atom-text-editor, atom-text-editor::shadow {
   }
   .gutter{
     background-color: @app-background-color;
-    .line-number .icon-right {
-      padding: 0;
+    .line-number {
+      .icon-right {
+        padding: 0;
+        &::before {
+          width: 7px;
+          font-size: 7px;
+        }
+      }
     }
   }
   .bracket-matcher .region {
@@ -38,5 +44,10 @@ atom-text-editor, atom-text-editor::shadow {
   }
   .invisible-character {
     color: rgba(255,255,255,.3);
+  }
+  .vertical-scrollbar,
+  .horizontal-scrollbar,
+  .scrollbar-corner {
+    display: none;
   }
 }
