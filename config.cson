@@ -1,4 +1,5 @@
 "*":
+  "atom-ternjs": {}
   "autocomplete-plus": {}
   "bracket-matcher": {}
   core:
