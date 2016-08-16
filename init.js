@@ -207,3 +207,18 @@ atom.commands.add('atom-workspace', 'custom:move-pane-to-left', () => {
   movePane('OnLeft');
 });
 
+
+atom.commands.add(
+  'atom-workspace atom-pane',
+  'custom:close-pane-and-focus-previous-if-possible',
+  () => {
+    let pane = atom.workspace.getActivePane();
+    let panes = atom.workspace.getPanes();
+    if (panes.indexOf(pane) > 0) {
+      pane.onDidDestroy(() => {
+        pane.container.activatePreviousPane();
+      });
+    }
+    pane.close();
+  }
+);
