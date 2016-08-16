@@ -213,18 +213,23 @@ atom.commands.add(
   'custom:close-pane-and-focus-previous-if-possible',
   () => {
     let pane = atom.workspace.getActivePane();
-    let siblings = pane.parent.children;
-    let panes = siblings;
-    if (siblings.length <= 1) {
-      panes = atom.workspace.getPanes();
+    if (pane.parent.constructor.name === 'PaneAxis') {
+      let siblings = pane.parent.children;
+      let panes = siblings;
+      if (siblings.length <= 1) {
+        panes = atom.workspace.getPanes();
+      }
+      let index = panes.indexOf(pane);
+      let nextIndex = index === 0 ? 1 : index - 1;
+      let nextTarget = panes[nextIndex];
+      if (nextTarget.constructor.name === 'PaneAxis') {
+        nextTarget = nextTarget.children[nextTarget.children.length - 1];
+      }
+      
+      pane.onDidDestroy(() => {
+        nextTarget.activate();
+      });
     }
-    let index = panes.indexOf(pane);
-    let nextIndex = index === 0 ? 1 : index - 1;
-    let nextTarget = panes[nextIndex];
-    
-    pane.onDidDestroy(() => {
-      nextTarget.activate();
-    });
     pane.close();
   }
 );
