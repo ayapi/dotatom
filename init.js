@@ -124,8 +124,6 @@ atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', 
     p = p.parent;
   }
   
-  let target = p;
-  
   let pname = p.constructor.name;
   if (pname == 'Pane'
       || (pname == 'PaneAxis' && p.orientation !== 'horizontal')) {
@@ -137,9 +135,18 @@ atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', 
     parent.replaceChild(p, newAxis);
     newAxis.setFlexScale(1);
     p.setFlexScale(1);
-    target = newAxis;
+    newAxis.addChild(newPane);
+  } else {
+    let pc = pane;
+    while(true) {
+      if (pc.parent.parent.constructor.name == 'PaneContainer') {
+        break;
+      }
+      pc = pc.parent;
+    }
+    pc.parent.insertChildAfter(pc, newPane);
   }
-  target.addChild(newPane);
+  
   newPane.activate();
   atom.workspace.open();
 });
