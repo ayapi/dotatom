@@ -158,24 +158,6 @@ function neighborPaneViewInDirection(direction) {
   let paneContainerView = atom.views.getView(pane.container);
   let paneViews = Array.from(paneContainerView.querySelectorAll('atom-pane'));
   
-  function compareVerticalDistance (a, b) {
-    let origin = box.top + (box.bottom - box.top) / 2;
-    let aDistance = Math.abs((a.top + (a.bottom - a.top) / 2) - origin);
-    let bDistance = Math.abs((b.top + (b.bottom - b.top) / 2) - origin);
-    if (aDistance <= bDistance) {
-      return a;
-    }
-    return b;
-  }
-  function compareHorizontalDistance (a, b) {
-    let origin = box.left + (box.right - box.left) / 2;
-    let aDistance = Math.abs((a.left + (a.right - a.left) / 2) - origin);
-    let bDistance = Math.abs((b.left + (b.right - b.left) / 2) - origin);
-    if (aDistance <= bDistance) {
-      return a;
-    }
-    return b;
-  }
   let matchedViews = paneViews.filter((curr) => {
     let currBox = curr.getBoundingClientRect();
     switch (direction) {
@@ -192,48 +174,110 @@ function neighborPaneViewInDirection(direction) {
   if (matchedViews.length == 0) {
     return null;
   }
-  return matchedViews.reduce((prev, curr) => {
+  let nearestValue = matchedViews.reduce((prev, curr) => {
     let prevBox = prev.getBoundingClientRect();
     let currBox = curr.getBoundingClientRect();
     switch (direction) {
       case 'left':
-        if (currBox.right == prevBox.right) {
-          let result = compareVerticalDistance(currBox, prevBox);
-          return (result == currBox) ? curr : prev;
-        }
         if (currBox.right >= prevBox.right) {
           return curr;
         }
         return prev;
       case 'right':
-        if (currBox.left == prevBox.left) {
-          let result = compareVerticalDistance(currBox, prevBox);
-          return (result == currBox) ? curr : prev;
-        }
         if (currBox.left <= prevBox.left) {
           return curr;
         }
         return prev;
       case 'above':
-        if (currBox.bottom == prevBox.bottom) {
-          let result = compareHorizontalDistance(currBox, prevBox);
-          return (result == currBox) ? curr : prev;
-        }
         if (currBox.bottom >= prevBox.bottom) {
           return curr;
         }
         return prev;
       case 'below':
-        if (currBox.top == prevBox.top) {
-          let result = compareHorizontalDistance(currBox, prevBox);
-          return (result == currBox) ? curr : prev;
-        }
         if (currBox.top <= prevBox.top) {
           return curr;
         }
         return prev;
     }
   });
+  
+  let boxForintersect = box;
+  let item = pane.getActiveItem();
+  if (item.constructor.name == 'TextEditor' && item.cursors.length > 0) {
+    let cursor = item.cursors.find((cursor) => {
+      return cursor.isVisible();
+    });
+    if (cursor) {
+      let cursorRect = cursor.getPixelRect();
+      let editorView = atom.views.getView(item);
+      let editorRect = editorView.getBoundingClientRect();
+      let editorScroll = {
+        top: editorView.getScrollTop(),
+        left: editorView.getScrollLeft()
+      }
+      if (cursorRect.top >= editorScroll.top
+        && cursorRect.top + cursorRect.height <= editorScroll.top + editorRect.height
+        && cursorRect.left >= editorScroll.left
+        && cursorRect.left + cursorRect.width <= editorScroll.left + editorRect.width
+      ) {
+        let vertical = cursorRect.top + editorRect.top - editorScroll.top;
+        let horizontal = cursorRect.left + editorRect.left - editorScroll.left;
+        boxForintersect = {
+          left: horizontal,
+          right: horizontal,
+          top: vertical,
+          bottom: vertical
+        }
+      }
+    }
+  }
+  let origin;
+  switch (direction) {
+    case 'left':
+    case 'right':
+      origin = boxForintersect.top + (boxForintersect.bottom - boxForintersect.top) / 2;
+      break;
+    case 'above':
+    case 'below':
+      origin = boxForintersect.left + (boxForintersect.right - boxForintersect.left) / 2;
+      break;
+  }
+  return matchedViews
+    .find((curr) => {
+      let nearestValueBox = nearestValue.getBoundingClientRect();
+      let currBox = curr.getBoundingClientRect();
+      switch (direction) {
+        case 'left':
+          if (currBox.right != nearestValueBox.right) {
+            return false;
+          }
+          break;
+        case 'right':
+          if (currBox.left != nearestValueBox.left) {
+            return false;
+          }
+          break;
+        case 'above':
+          if (currBox.bottom != nearestValueBox.bottom) {
+            return false;
+          }
+          break;
+        case 'below':
+          if (currBox.top != nearestValueBox.top) {
+            return false;
+          }
+          break;
+      }
+      
+      switch (direction) {
+        case 'left':
+        case 'right':
+          return (currBox.top <= origin && origin <= currBox.bottom);
+        case 'above':
+        case 'below':
+          return (currBox.left <= origin && origin <= currBox.right);
+      }
+    });
 }
 atom.commands.add('atom-workspace atom-pane', 'custom:focus-pane-on-left', () => {
   let target = neighborPaneViewInDirection('left')
