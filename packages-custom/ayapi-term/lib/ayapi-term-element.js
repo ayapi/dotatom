@@ -1,7 +1,6 @@
 'use babel';
 import { CompositeDisposable, Emitter } from 'atom';
 import Terminal from 'xterm';
-import fit from 'xterm/addons/fit/fit';
 
 class AyapiTermElement extends HTMLElement {
   initialize(state) {
@@ -30,8 +29,9 @@ class AyapiTermElement extends HTMLElement {
       cols: this.model.cols,
       rows: this.model.rows
     });
-    this.attachListeners();
     this.terminal.open(this);
+    this.fit();
+    this.attachListeners();
     this.terminal.attachCustomKeydownHandler(
       this.handleKeymapsOnTerminal.bind(this)
     );
@@ -78,7 +78,7 @@ class AyapiTermElement extends HTMLElement {
     if (this.style.display == 'none') {
       return;
     }
-    let {cols, rows} = this.terminal.proposeGeometry();
+    let {cols, rows} = this.proposeGeometry();
     if (Number.isInteger(cols) && Number.isInteger(rows)
         && this.model.cols !== cols || this.model.rows !== rows) {
       this.model.cols = cols;
@@ -86,6 +86,35 @@ class AyapiTermElement extends HTMLElement {
       this.terminal.resize(cols, rows);
       this.model.sendResize(cols, rows);
     }
+  }
+  
+  proposeGeometry() {
+    let parentElementStyle = window.getComputedStyle(this.terminal.element.parentElement),
+        parentElementHeight = parseInt(parentElementStyle.getPropertyValue('height')),
+        parentElementWidth = parseInt(parentElementStyle.getPropertyValue('width')),
+        elementStyle = window.getComputedStyle(this.terminal.element),
+        elementPaddingVer = parseInt(elementStyle.getPropertyValue('padding-top')) + parseInt(elementStyle.getPropertyValue('padding-bottom')),
+        elementPaddingHor = parseInt(elementStyle.getPropertyValue('padding-right')) + parseInt(elementStyle.getPropertyValue('padding-left')),
+        availableHeight = parentElementHeight - elementPaddingVer,
+        availableWidth = parentElementWidth - elementPaddingHor,
+        container = this.terminal.rowContainer,
+        subjectRow = this.terminal.rowContainer.firstElementChild,
+        contentBuffer = subjectRow.innerHTML,
+        characterHeight,
+        rows,
+        characterWidth,
+        cols,
+        geometry;
+
+    let charSize = this.terminal.charMeasureElement.getBoundingClientRect();
+    characterHeight = charSize.height || 16;
+    characterWidth = charSize.widht || 7;
+    
+    rows = parseInt(availableHeight / characterHeight);
+    cols = parseInt(availableWidth / characterWidth);
+
+    geometry = {cols: cols, rows: rows};
+    return geometry;
   }
   
   scroll(amount) {
