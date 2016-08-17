@@ -30,7 +30,6 @@ class AyapiTermElement extends HTMLElement {
       rows: this.model.rows
     });
     this.terminal.open(this);
-    this.fit();
     this.attachListeners();
     this.terminal.attachCustomKeydownHandler(
       this.handleKeymapsOnTerminal.bind(this)
@@ -79,8 +78,11 @@ class AyapiTermElement extends HTMLElement {
       return;
     }
     let {cols, rows} = this.proposeGeometry();
-    if (Number.isInteger(cols) && Number.isInteger(rows)
-        && this.model.cols !== cols || this.model.rows !== rows) {
+    if (
+      (!Number.isNaN(cols) && !Number.isNaN(rows) && cols > 2 && rows > 0)
+      &&
+      (this.model.cols !== cols || this.model.rows !== rows)
+    ) {
       this.model.cols = cols;
       this.model.rows = rows;
       this.terminal.resize(cols, rows);
@@ -108,7 +110,7 @@ class AyapiTermElement extends HTMLElement {
 
     let charSize = this.terminal.charMeasureElement.getBoundingClientRect();
     characterHeight = charSize.height || 16;
-    characterWidth = charSize.widht || 7;
+    characterWidth = charSize.width || 7;
     
     rows = parseInt(availableHeight / characterHeight);
     cols = parseInt(availableWidth / characterWidth);
