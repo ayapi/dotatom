@@ -101,8 +101,9 @@ export default class AyapiTermModel {
     let projectFolder = atom.project.getPaths()[0];
     let activeEditor = atom.workspace.getActiveTextEditor();
     let editorPath = activeEditor != null ? activeEditor.getPath() : null;
+    let editorFolder = '';
     if (editorPath != null) {
-      let editorFolder = path.dirname(editorPath);
+      editorFolder = path.dirname(editorPath);
       let projectPaths = atom.project.getPaths();
       for (j = 0, len = projectPaths.length; j < len; j++) {
         directory = projectPaths[j];
