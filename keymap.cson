@@ -1,6 +1,7 @@
 'atom-workspace':
 	'ctrl-shift-w': 'unset!'
 	'ctrl-alt-i': 'unset!'
+	'ctrl-alt-o': 'unset!'
 	
 'atom-workspace atom-text-editor':
 	'alt-left': 'unset!'
@@ -18,6 +19,7 @@
 	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
 	'ctrl-q': 'window:close'
 	'ctrl-shift-i': 'window:toggle-dev-tools'
+	'ctrl-o': 'advanced-open-file:toggle'
 	
 'atom-workspace atom-pane':
 	'ctrl-down': 'custom:scroll-down'
