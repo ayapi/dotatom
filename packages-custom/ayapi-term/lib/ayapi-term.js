@@ -7,9 +7,18 @@ export default class AyapiTermModel {
     this.emitter = new Emitter();
     this.subscriptions = new CompositeDisposable();
     
+    let shell = process.env.SHELL;
+    if (!shell) {
+      if (process.platform === 'win32') {
+        shell = path.resolve(process.env.SystemRoot, 'System32', 'cmd.exe');
+      } else {
+        shell = 'bash';
+      }
+    }
+    
     let defaults = {
       pwd: this.detectPwd(),
-      shell: process.platform === 'win32' ? 'cmd.exe' : (process.env.SHELL || 'bash'),
+      shell: shell,
       args: [],
       cols: 60,
       rows: 5

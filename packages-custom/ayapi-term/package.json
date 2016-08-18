@@ -9,7 +9,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "ptyw.js": "^0.4.0",
+    "ptyw.js": "git://github.com/ayapi/ptyw.js.git",
     "xterm": "git://github.com/sourcelair/xterm.js.git"
   },
   "deserializers": {
