@@ -1,6 +1,10 @@
 atom-ternjs@0.14.2
+atom-yeoman@0.3.15
 cursor-blink-interval@0.3.1
+json-schema@0.1.15
 language-jade@0.7.1
+linter@1.11.16
 monokai@0.18.0
+omnisharp-atom@0.30.4
 
 
