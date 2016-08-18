@@ -383,3 +383,9 @@ atom.commands.add(
     pane.close();
   }
 );
+
+atom.commands.add('atom-workspace', 'custom:maximizeOnDualDisplay', () => {
+  let displaySize = {w: 1920, h: 1200};
+  atom.setPosition(0, 0);
+  atom.setSize(displaySize.h * 2, displaySize.w - taskBarSize);
+});
