@@ -1,0 +1,20 @@
+diff -urN app_unpacked/src/main-process/main.js app_modified/src/main-process/main.js
+--- app_unpacked/src/main-process/main.js	2016-08-22 15:59:15.243882300 +0900
++++ app_modified/src/main-process/main.js	2016-08-22 16:17:22.304936900 +0900
+@@ -45,6 +45,16 @@
+       });
+       return;
+     }
++    
++    try {
++      var switches = require(path.join(process.env.ATOM_HOME, 'switches.json'));
++      switches.forEach(function (sw) {
++        if (sw.length > 0) {
++          app.commandLine.appendSwitch.apply(app.commandLine, sw);
++        }
++      });
++    } catch(e){}
++    
+     app.setAppUserModelId('com.squirrel.atom.atom');
+     addPathToOpen = function(event, pathToOpen) {
+       event.preventDefault();
