@@ -1,6 +1,7 @@
 "use babel";
 
 const path = require('path');
+const os = require('os');
 
 function requireAtomCoreModule(name) {
   return require(path.join(atom.packages.resourcePath, 'src', name));
@@ -8,6 +9,10 @@ function requireAtomCoreModule(name) {
 const Pane = requireAtomCoreModule('pane');
 const PaneAxis = requireAtomCoreModule('pane-axis');
 
+if (os.platform() == 'win32' && os.release().startsWith('10.')) {
+  // currently `transparent` isnt supported on win10 
+  document.body.style.backgroundColor = "#000";
+}
 
 Function.prototype.clone = function() {
   var that = this;
