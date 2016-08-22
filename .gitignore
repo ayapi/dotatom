@@ -1,4 +1,5 @@
 .apm
+.apmrc
 .node-gyp
 .npm
 compile-cache
