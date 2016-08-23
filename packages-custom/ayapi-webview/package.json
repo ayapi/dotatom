@@ -1,0 +1,20 @@
+{
+  "name": "ayapi-webview",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "webview for atom",
+  "keywords": [],
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-utils": "^0.9.2"
+  },
+  "deserializers": {
+    "AyapiWebviewElement": "deserializeAyapiWebviewElement"
+  },
+  "viewProviders": [
+    "buildView"
+  ]
+}

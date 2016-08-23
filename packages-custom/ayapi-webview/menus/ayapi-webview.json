@@ -1,0 +1,18 @@
+{
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "ayapi-webview",
+          "submenu": [
+            {
+              "label": "Open",
+              "command": "ayapi-webview:open"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

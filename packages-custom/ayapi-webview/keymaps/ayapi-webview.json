@@ -1,0 +1,9 @@
+{
+  "atom-workspace": {
+    "ctrl-l": "ayapi-webview:open"
+  },
+  "atom-workspace atom-text-editor.ayapi-webview-address": {
+    "enter": "ayapi-webview:load",
+    "alt-enter": "ayapi-webview:load-as-new"
+  }
+}
