@@ -69,12 +69,12 @@ export default {
     editorElement.addEventListener('keydown', (ev) => {
       switch (ev.key) {
         case 'Escape':
-          atom.commands.dispatch(editor, 'core:cancel');
+          atom.commands.dispatch(editorElement, 'core:cancel');
           break;
       }
     });
     editorElement.addEventListener('blur', (ev) => {
-      atom.commands.dispatch(editor, 'core:cancel');
+      atom.commands.dispatch(editorElement, 'core:cancel');
     });
     
     this.subscriptions.add(
