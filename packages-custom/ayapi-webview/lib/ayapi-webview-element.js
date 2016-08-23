@@ -22,7 +22,7 @@ class AyapiWebviewElement extends HTMLElement {
     [
       'dom-ready', 'did-finish-load', 'did-fail-load',
       'did-start-loading', 'did-stop-loading',
-      'page-title-updated', 'new-window',
+      'page-title-updated', 'new-window', 'did-get-redirect-request',
       'will-navigate', 'did-navigate', 'close', 'ipc-message',
       'crashed', 'gpu-crashed', 'plugin-crashed'
     ].forEach((name) => {
@@ -53,6 +53,13 @@ class AyapiWebviewElement extends HTMLElement {
     
     this.emitter.on('will-navigate', (ev) => {
       this.model.address = ev.url;
+    });
+    
+    this.emitter.on('did-get-redirect-request', (ev) => {
+      let {newURL, isMainFrame} = ev;
+      if (isMainFrame) {
+        this.model.address = newURL;
+      }
     });
     
     if (model.address) {
