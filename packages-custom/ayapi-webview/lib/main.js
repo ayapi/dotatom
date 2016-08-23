@@ -160,6 +160,11 @@ export default {
       });
     }
     this.storeFocusedElement();
+    let pane = atom.workspace.getActivePane();
+    let item = pane.getActiveItem();
+    if (item instanceof AyapiWebviewElement) {
+      this.editor.setText(item.getURL());
+    }
     this.panel.show();
     atom.views.getView(this.editor).focus();
   },

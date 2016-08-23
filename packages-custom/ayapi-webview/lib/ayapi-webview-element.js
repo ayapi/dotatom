@@ -79,6 +79,10 @@ class AyapiWebviewElement extends HTMLElement {
     }
   }
   
+  getURL() {
+    return this.model.address;
+  }
+  
   onDidChangeTitle(callback) {
     return this.emitter.on('did-change-title', callback);
   }
