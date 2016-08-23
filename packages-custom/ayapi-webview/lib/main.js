@@ -41,7 +41,9 @@ export default {
         }
         let model = new AyapiWebview(options);
         this.models.push(model);
-        return atom.views.getView(model);
+        let view = atom.views.getView(model);
+        this.bindViewEvents(view);
+        return view;
       })
     );
     
@@ -53,6 +55,7 @@ export default {
         let view = this.views.get(model.uri);
         if (view) {
           view.setModel(model);
+          this.bindViewEvents(view);
         }
       });
     }
@@ -121,6 +124,19 @@ export default {
       });
       view.setModel(model);
       return view;
+    }
+  },
+  
+  bindViewEvents(view) {
+    this.subscriptions.add(
+      view.onWillOpenNewWindow(this.handleNewWindow.bind(this))
+    );
+  },
+  
+  handleNewWindow(ev) {
+    const protocol = require('url').parse(ev.url).protocol
+    if (protocol === 'http:' || protocol === 'https:') {
+      atom.workspace.open(ev.url);
     }
   },
   

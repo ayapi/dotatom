@@ -83,6 +83,10 @@ class AyapiWebviewElement extends HTMLElement {
     return this.model.address;
   }
   
+  onWillOpenNewWindow(callback) {
+    return this.emitter.on('new-window', callback);
+  }
+  
   onDidChangeTitle(callback) {
     return this.emitter.on('did-change-title', callback);
   }
