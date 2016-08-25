@@ -1,9 +1,22 @@
 {
   "atom-workspace": {
-    "ctrl-l": "ayapi-webview:open"
+    "ctrl-l": "ayapi-webview:input-address"
   },
   "atom-workspace atom-text-editor.ayapi-webview-address": {
     "enter": "ayapi-webview:load",
     "alt-enter": "ayapi-webview:load-as-new"
+  },
+  "ayapi-webview": {
+    "ctrl-down": "native!",
+    "ctrl-up": "native!",
+    "pagedown": "native!",
+    "pageup": "native!",
+    "left": "native!",
+    "right": "native!",
+    "up": "native!",
+    "down": "native!",
+    "backspace": "native!",
+    "delete": "native!",
+    "enter": "native!"
   }
 }

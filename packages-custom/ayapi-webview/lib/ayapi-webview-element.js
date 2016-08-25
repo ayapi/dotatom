@@ -1,5 +1,5 @@
 'use babel';
-import { EventsDelegation } from 'atom-utils';
+import { EventsDelegation, DisposableEvents } from 'atom-utils';
 import { CompositeDisposable, Disposable, Emitter } from 'atom';
 
 class AyapiWebviewElement extends HTMLElement {
@@ -31,6 +31,10 @@ class AyapiWebviewElement extends HTMLElement {
       };
     });
     this.subscriptions.add(this.subscribeTo(webview, webviewEvents));
+    
+    this.subscriptions.add(
+      this.addDisposableEventListener(this, 'focus', ev => webview.focus())
+    );
     
     let readyCallback = function() {
       this.ready = true;
