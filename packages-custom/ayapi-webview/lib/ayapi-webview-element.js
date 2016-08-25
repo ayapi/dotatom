@@ -1,6 +1,6 @@
 'use babel';
 import { EventsDelegation } from 'atom-utils';
-import { CompositeDisposable, Emitter } from 'atom';
+import { CompositeDisposable, Disposable, Emitter } from 'atom';
 
 class AyapiWebviewElement extends HTMLElement {
   initialize(state) {
@@ -20,7 +20,7 @@ class AyapiWebviewElement extends HTMLElement {
     let webview = document.createElement('webview');
     let webviewEvents = {};
     [
-      'dom-ready', 'did-finish-load', 'did-fail-load',
+      'load-commit', 'dom-ready', 'did-finish-load', 'did-fail-load',
       'did-start-loading', 'did-stop-loading',
       'page-title-updated', 'new-window', 'did-get-redirect-request',
       'will-navigate', 'did-navigate', 'close', 'ipc-message',
@@ -38,12 +38,15 @@ class AyapiWebviewElement extends HTMLElement {
     }.bind(this);
     this.emitter.on('dom-ready', readyCallback);
     
+    this.subscriptionForInitialLoad = null;
+    
     this.emitter.on('page-title-updated', (ev) => {
       this.title = ev.title;
       this.emitter.emit('did-change-title', ev.title);
     });
     
     webview.setAttribute('src', 'about:blank');
+    webview.setAttribute('partition', 'persist:atom-ayapi-webview');
     this.appendChild(webview);
     this.webview = webview;
   }
@@ -51,7 +54,14 @@ class AyapiWebviewElement extends HTMLElement {
   setModel(model) {
     this.model = model;
     
-    this.emitter.on('will-navigate', (ev) => {
+    this.emitter.on('load-commit', (ev) => {
+      let {url, isMainFrame} = ev;
+      if (isMainFrame) {
+        this.model.address = url;
+      }
+    });
+    
+    this.emitter.on('did-navigate-in-page', (ev) => {
       this.model.address = ev.url;
     });
     
@@ -68,19 +78,38 @@ class AyapiWebviewElement extends HTMLElement {
   }
   
   loadURL(url) {
+    if (this.subscriptionForInitialLoad) {
+      this.subscriptionForInitialLoad.dispose();
+    }
     if (this.ready) {
+      this.webview.stop();
       this.webview.loadURL(url);
     } else {
       let readyCallback = function() {
         this.emitter.off('dom-ready', readyCallback);
+        this.webview.stop();
         this.webview.loadURL(url);
       }.bind(this);
       this.emitter.on('dom-ready', readyCallback);
+      this.subscriptionForInitialLoad = new Disposable(() => {
+        this.emitter.off('dom-ready', readyCallback);
+        this.subscriptionForInitialLoad = null;
+      });
     }
   }
   
   getURL() {
-    return this.model.address;
+    try {
+      return this.webview.getURL();
+    } catch (e) {
+      return this.model.address;
+    }
+  }
+  
+  onDomReady(callback) {
+    return this.emitter.on('dom-ready', () => {
+      callback(this.webview.getURL());
+    });
   }
   
   onWillOpenNewWindow(callback) {
@@ -113,6 +142,17 @@ class AyapiWebviewElement extends HTMLElement {
   destroy() {
     this.emitter.dispose();
     this.subscriptions.dispose();
+    if (this.subscriptionForInitialLoad) {
+      this.subscriptionForInitialLoad.dispose();
+    }
+    if (this.webview && this.ready) {
+      try {
+        this.webview.stop();
+      } catch (err) {
+        // ignore error
+      }
+      this.removeChild(this.webview);
+    }
   }
 }
 
