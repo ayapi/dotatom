@@ -7,6 +7,10 @@
     "alt-enter": "ayapi-webview:load-as-new"
   },
   "ayapi-webview": {
+    "f5": "ayapi-webview:reload",
+    "ctrl-r": "ayapi-webview:reload",
+    "alt-left": "ayapi-webview:backward-history",
+    "alt-right": "ayapi-webview:forward-history",
     "ctrl-down": "native!",
     "ctrl-up": "native!",
     "pagedown": "native!",

@@ -36,6 +36,14 @@ class AyapiWebviewElement extends HTMLElement {
       this.addDisposableEventListener(this, 'focus', ev => webview.focus())
     );
     
+    this.subscriptions.add(
+      atom.commands.add(webview, {
+        'ayapi-webview:reload': this.reload.bind(this),
+        'ayapi-webview:backward-history': this.backwardHistory.bind(this),
+        'ayapi-webview:forward-history': this.forwardHistory.bind(this)
+      })
+    );
+    
     let readyCallback = function() {
       this.ready = true;
       this.emitter.off('dom-ready', readyCallback);
@@ -100,6 +108,18 @@ class AyapiWebviewElement extends HTMLElement {
         this.subscriptionForInitialLoad = null;
       });
     }
+  }
+  
+  reload() {
+    this.webview.reloadIgnoringCache();
+  }
+  
+  backwardHistory() {
+    this.webview.goBack();
+  }
+  
+  forwardHistory() {
+    this.webview.goForward();
   }
   
   getURL() {
