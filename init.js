@@ -81,7 +81,7 @@ atom.workspace.panelContainers.modal.onDidAddPanel((params) => {
   });
 });
 
-function scroll(amount) {
+function scrollEditor(amount) {
   let pane = atom.workspace.getActivePane();
   if (!pane) {
     return;
@@ -93,11 +93,11 @@ function scroll(amount) {
   item.setScrollTop(item.getScrollTop() + item.getLineHeightInPixels() * amount);
 }
 
-atom.commands.add('atom-pane', 'custom:scroll-down', () => {
-  scroll(3);
+atom.commands.add('atom-workspace atom-text-editor:not(mini)', 'custom:editor-scroll-down', () => {
+  scrollEditor(3);
 });
-atom.commands.add('atom-pane', 'custom:scroll-up', () => {
-  scroll(-3);
+atom.commands.add('atom-workspace atom-text-editor:not(mini)', 'custom:editor-scroll-up', () => {
+  scrollEditor(-3);
 });
 
 atom.commands.add('atom-workspace', 'custom:split-right-and-new-editor', () => {
