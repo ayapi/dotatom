@@ -50,10 +50,9 @@ export default {
     if (state && state.models) {
       state.models.forEach((s) => {
         let model = atom.deserializers.deserialize(s);
-        this.models.push(model);
-        
         let view = this.views.get(model.uri);
         if (view) {
+          this.models.push(model);
           view.setModel(model);
           this.bindViewEvents(view);
         }
@@ -90,15 +89,26 @@ export default {
   },
 
   deactivate() {
-    atom.views.getView(this.editor).destroy();
+    this.editor.destroy();
+    this.editor = null;
     if (this.panel) {
       this.panel.destroy();
+      this.panel = null;
     }
     this.subscriptions.dispose();
     this.models.forEach((model) => {
+      let pane = atom.workspace.paneForURI(model.uri);
+      if (pane) {
+        pane.destroyItem(pane.itemForURI(model.uri));
+      }
+      let view = this.views.get(model.uri);
+      if (view) {
+        view.destroy();
+      }
       model.destroy();
-      atom.views.getView(model).destroy();
     });
+    this.models = [];
+    this.views = new Map();
   },
 
   serialize() {
