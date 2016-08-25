@@ -4,6 +4,7 @@ import url from 'url';
 import AyapiWebview from './ayapi-webview';
 import AyapiWebviewElement from './ayapi-webview-element';
 import { CompositeDisposable } from 'atom';
+import { remote } from 'electron';
 
 atom.deserializers.add(AyapiWebview);
 
@@ -14,6 +15,7 @@ export default {
   subscriptions: null,
   panel: null,
   editor: null,
+  session: null,
 
   activate(state) {
     // Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -86,6 +88,10 @@ export default {
         'core:cancel': this.cancel.bind(this)
       })
     );
+    
+    this.session = remote.session.fromPartition('persist:atom-ayapi-webview', {
+      cache: false
+    });
   },
 
   deactivate() {
@@ -109,6 +115,7 @@ export default {
     });
     this.models = [];
     this.views = new Map();
+    this.session = null;
   },
 
   serialize() {
