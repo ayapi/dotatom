@@ -160,7 +160,7 @@ export default {
   load(ev) {
     let pane = atom.workspace.getActivePane();
     let item = pane.getActiveItem();
-    if (!(item instanceof AyapiWebviewElement)) {
+    if (!(item && item.constructor.name === 'ayapi-webview')) {
       this.loadAsNew(ev);
       return;
     }
@@ -195,7 +195,7 @@ export default {
     this.storeFocusedElement();
     let pane = atom.workspace.getActivePane();
     let item = pane.getActiveItem();
-    if (item instanceof AyapiWebviewElement) {
+    if (item && item.constructor.name === 'ayapi-webview') {
       this.editor.setText(item.getURL());
     }
     this.panel.show();
