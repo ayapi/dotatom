@@ -73,6 +73,7 @@ atom.workspace.onDidOpen((ev) => {
 
 atom.workspace.onDidStopChangingActivePaneItem(() => {
   atom.project.getRepositories().forEach((repo) => {
+    if (!repo) return;
     repo.refreshStatus();
   });
 });
