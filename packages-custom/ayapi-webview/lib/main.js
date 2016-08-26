@@ -1,6 +1,7 @@
 'use babel';
 
 import url from 'url';
+import { isWebUri } from 'valid-url';
 import AyapiWebview from './ayapi-webview';
 import AyapiWebviewElement from './ayapi-webview-element';
 import { CompositeDisposable } from 'atom';
@@ -165,14 +166,23 @@ export default {
       return;
     }
     let webviewElement = atom.views.getView(item);
-    webviewElement.loadURL(this.editor.getText());
+    let address = this.convertInvalidURLToGoogle(this.editor.getText());
+    webviewElement.loadURL(address);
     webviewElement.focus();
     this.panel.hide();
   },
   
   loadAsNew(ev) {
-    atom.workspace.open(this.editor.getText());
+    let address = this.convertInvalidURLToGoogle(this.editor.getText());
+    atom.workspace.open(address);
     this.panel.hide();
+  },
+  
+  convertInvalidURLToGoogle(url) {
+    if (isWebUri(url)) {
+      return url;
+    }
+    return `https://www.google.co.jp/search?q=${encodeURIComponent(url)}`;
   },
   
   storeFocusedElement() {
@@ -200,6 +210,7 @@ export default {
     }
     this.panel.show();
     atom.views.getView(this.editor).focus();
+    this.editor.selectAll();
   },
   
   cancel(ev) {
