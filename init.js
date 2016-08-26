@@ -59,6 +59,12 @@ atom.workspace.onDidOpen((ev) => {
   }
 });
 
+atom.workspace.onDidStopChangingActivePaneItem(() => {
+  atom.project.getRepositories().forEach((repo) => {
+    repo.refreshStatus();
+  });
+});
+
 function moveModalPanel(panel) {
   let activePane = atom.workspace.getActivePane();
   let activePaneElement = atom.views.getView(activePane);
