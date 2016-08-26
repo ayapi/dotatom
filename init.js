@@ -38,6 +38,18 @@ function fixSoftWrapToWordBreakable(editor) {
 }
 atom.workspace.observeTextEditors(fixSoftWrapToWordBreakable);
 
+function fixSoftWrapColumnLength(editor) {
+  editor.getSoftWrapColumn = function() {
+    if (!this.isSoftWrapped()) return Infinity;
+    if (this.softWrapAtPreferredLineLength) {
+      return Math.min(this.getEditorWidthInChars(), this.preferredLineLength) - 1;
+    } else {
+      return this.getEditorWidthInChars() - 1;
+    }
+  }.bind(editor);
+}
+atom.workspace.observeTextEditors(fixSoftWrapColumnLength);
+
 atom.workspace.onDidOpen((ev) => {
   let {item, pane} = ev;
   let items = pane.getItems();
