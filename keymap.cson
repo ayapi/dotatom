@@ -58,3 +58,9 @@
 	'ctrl-alt-down' : 'custom:swap-pane-with-down'
 	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
 	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
+	
+'atom-workspace ayapi-webview':
+	'alt-left': 'custom:focus-pane-on-left'
+	'alt-right': 'custom:focus-pane-on-right'
+	'alt-home': 'ayapi-webview:backward-history'
+	'alt-end': 'ayapi-webview:forward-history'
