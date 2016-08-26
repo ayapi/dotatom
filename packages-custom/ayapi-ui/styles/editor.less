@@ -29,6 +29,9 @@ atom-text-editor, atom-text-editor::shadow {
   .gutter{
     background-color: @app-background-color;
     .line-number {
+      &[data-buffer-row="-1"] {
+        visibility: hidden;
+      }
       .icon-right {
         padding: 0;
         &::before {
