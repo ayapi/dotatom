@@ -14,8 +14,8 @@
 	'alt-right': 'unset!'
 
 'atom-workspace atom-text-editor:not([mini])':
-	'ctrl-down': 'custom:scroll-down'
-	'ctrl-up': 'custom:scroll-up'
+	'ctrl-down': 'custom:editor-scroll-down'
+	'ctrl-up': 'custom:editor-scroll-up'
 
 'atom-workspace':
 	# alt-= on JIS
