@@ -1,4 +1,6 @@
 [
+  ["enable-transparent-visuals"],
+  ["disable-gpu"],
   ["disable-direct-write"],
   ["disable-directwrite-for-ui"]
 ]

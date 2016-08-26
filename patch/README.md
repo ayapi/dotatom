@@ -4,6 +4,9 @@ npm install -g asar
 ```
 
 # atomインストールディレクトリどこ
+## Arch Linux
+community/atom でインストールしてれば `/usr/lib/atom`
+
 ## Windows
 ```
 %userprofile%\AppData\Local\atom\app-【atomバージョン】\
@@ -32,15 +35,30 @@ rm -rf app_modified
 拡張子を`.patch`にする、ってことにした
 
 # patchをぜんぶ一気にぁてるゃりかた
+
+## Arch Linux
+community/atom でインストールしてる前提
+
+確認事項
+
+1. /usr/lib/atom にインストールされてる
+2. app.asarとかなくて/usr/lib/atom直下にsrcがぁる
+
+満たしてれば
+
+```sh
+~/.atom/patch/patcher.zsh
+```
+
+でぉゎり
+
+## Windows
+
 ```sh
 cd atom_installed_dir
 ```
 のぁとに、
 
-## Linux
-まだかぃてなぃ
-
-## Windows
 ```bat
 %userprofile%\.atom\patch\patcher.bat
 ```

@@ -1,0 +1,14 @@
+diff -urN app_unpacked/src/main-process/atom-window.js app_modified/src/main-process/atom-window.js
+--- app_unpacked/src/main-process/atom-window.js	2016-08-27 03:40:10.103262774 +0900
++++ app_modified/src/main-process/atom-window.js	2016-08-27 03:45:13.110583200 +0900
+@@ -47,7 +47,9 @@
+       options = {
+         show: false,
+         title: 'Atom',
+-        backgroundColor: "#fff",
++        backgroundColor: "#00000000",
++        transparent: true,
++        frame: false,
+         webPreferences: {
+           backgroundThrottling: !this.isSpec
+         }
