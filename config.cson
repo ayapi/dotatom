@@ -1,7 +1,9 @@
 "*":
   "atom-ternjs": {}
   "autocomplete-plus": {}
-  "bracket-matcher": {}
+  "bracket-matcher":
+    autocompleteBrackets: false
+    autocompleteSmartQuotes: false
   core:
     automaticallyUpdate: false
     disabledPackages: [
