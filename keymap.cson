@@ -62,5 +62,5 @@
 'atom-workspace ayapi-webview':
 	'alt-left': 'custom:focus-pane-on-left'
 	'alt-right': 'custom:focus-pane-on-right'
-	'alt-home': 'ayapi-webview:backward-history'
-	'alt-end': 'ayapi-webview:forward-history'
+	'ctrl-home': 'ayapi-webview:backward-history'
+	'ctrl-end': 'ayapi-webview:forward-history'
