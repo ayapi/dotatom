@@ -21,6 +21,8 @@
     "down": "native!",
     "backspace": "native!",
     "delete": "native!",
-    "enter": "native!"
+    "enter": "native!",
+    "ctrl-c": "native!",
+    "ctrl-v": "native!"
   }
 }
