@@ -40,7 +40,8 @@ class AyapiWebviewElement extends HTMLElement {
       atom.commands.add(webview, {
         'ayapi-webview:reload': this.reload.bind(this),
         'ayapi-webview:backward-history': this.backwardHistory.bind(this),
-        'ayapi-webview:forward-history': this.forwardHistory.bind(this)
+        'ayapi-webview:forward-history': this.forwardHistory.bind(this),
+        'ayapi-webview:toggle-dev-tools': this.toggleDevTools.bind(this)
       })
     );
     
@@ -120,6 +121,14 @@ class AyapiWebviewElement extends HTMLElement {
   
   forwardHistory() {
     this.webview.goForward();
+  }
+  
+  toggleDevTools() {
+    if (this.webview.isDevToolsOpened()) {
+      this.webview.closeDevTools();
+    } else {
+      this.webview.openDevTools();
+    }
   }
   
   getURL() {

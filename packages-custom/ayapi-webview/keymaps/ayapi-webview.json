@@ -11,6 +11,8 @@
     "ctrl-r": "ayapi-webview:reload",
     "alt-left": "ayapi-webview:backward-history",
     "alt-right": "ayapi-webview:forward-history",
+    "ctrl-shift-i": "ayapi-webview:toggle-dev-tools",
+    "f12": "ayapi-webview:toggle-dev-tools",
     "ctrl-down": "native!",
     "ctrl-up": "native!",
     "pagedown": "native!",
