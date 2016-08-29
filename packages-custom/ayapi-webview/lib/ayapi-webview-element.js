@@ -17,6 +17,21 @@ class AyapiWebviewElement extends HTMLElement {
     this.classList.add('ayapi-webview');
     this.setAttribute('tabindex', '-1');
     
+    this.subscriptions.add(
+      atom.workspace.onDidChangeActivePaneItem((item) => {
+        if (item == this) {
+          this.style.visibility = 'visible';
+          return;
+        }
+        let paneForActivatedItem = atom.workspace.paneForItem(item);
+        let paneForThis = atom.workspace.paneForItem(this);
+        if (paneForActivatedItem == paneForThis) {
+          this.style.visibility = 'hidden';
+          this.style.display = null;
+        }
+      })
+    );
+    
     let webview = document.createElement('webview');
     let webviewEvents = {};
     [

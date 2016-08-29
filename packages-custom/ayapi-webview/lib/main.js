@@ -2,6 +2,7 @@
 
 import url from 'url';
 import { isWebUri } from 'valid-url';
+import openInDefaultBrowser from 'open';
 import AyapiWebview from './ayapi-webview';
 import AyapiWebviewElement from './ayapi-webview-element';
 import { CompositeDisposable } from 'atom';
@@ -153,7 +154,19 @@ export default {
   },
   
   handleNewWindow(ev) {
-    const protocol = require('url').parse(ev.url).protocol
+    if (ev.disposition === 'new-window') {
+      openInDefaultBrowser(ev.url);
+      return;
+    }
+    if (ev.disposition === 'background-tab') {
+      let fromPane = atom.workspace.getActivePane();
+      let fromItem = atom.workspace.getActivePaneItem();
+      let disposable = atom.workspace.onDidOpen(() => {
+        disposable.dispose();
+        fromPane.activateItem(fromItem);
+      });
+    }
+    const protocol = url.parse(ev.url).protocol;
     if (protocol === 'http:' || protocol === 'https:') {
       atom.workspace.open(ev.url);
     }
