@@ -65,7 +65,8 @@ export default {
     let editor = atom.workspace.buildTextEditor({
       mini: true,
       lineNumberGutterVisible: false,
-      placeholderText: 'http://'
+      placeholderText: 'http://',
+      softWrapped: false
     });
     this.editor = editor;
     
