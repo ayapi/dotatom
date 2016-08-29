@@ -179,11 +179,14 @@ export default {
     this.panel.hide();
   },
   
-  convertInvalidURLToGoogle(url) {
-    if (isWebUri(url)) {
-      return url;
+  convertInvalidURLToGoogle(address) {
+    if (url.parse(address).protocol) {
+      return address;
     }
-    return `https://www.google.co.jp/search?q=${encodeURIComponent(url)}`;
+    if (isWebUri('http://' + address)) {
+      return 'http://' + address;
+    }
+    return `https://www.google.co.jp/search?q=${encodeURIComponent(address)}`;
   },
   
   storeFocusedElement() {
