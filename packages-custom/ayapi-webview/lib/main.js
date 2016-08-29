@@ -197,7 +197,7 @@ export default {
     if (url.parse(address).protocol) {
       return address;
     }
-    if (isWebUri('http://' + address)) {
+    if (address.includes('.') && isWebUri('http://' + address)) {
       return 'http://' + address;
     }
     return `https://www.google.co.jp/search?q=${encodeURIComponent(address)}`;
