@@ -1,6 +1,8 @@
 'use babel';
+import path from 'path';
 import { EventsDelegation, DisposableEvents } from 'atom-utils';
 import { CompositeDisposable, Disposable, Emitter } from 'atom';
+import chromeNetworkErrors from 'chrome-network-errors';
 
 class AyapiWebviewElement extends HTMLElement {
   initialize(state) {
@@ -75,6 +77,7 @@ class AyapiWebviewElement extends HTMLElement {
     
     webview.setAttribute('src', 'about:blank');
     webview.setAttribute('partition', 'persist:atom-ayapi-webview');
+    webview.setAttribute('preload', path.join(__dirname, 'preload.js'));
     this.appendChild(webview);
     this.webview = webview;
   }
@@ -98,6 +101,19 @@ class AyapiWebviewElement extends HTMLElement {
       if (isMainFrame) {
         this.model.address = newURL;
       }
+    });
+    
+    this.emitter.on('did-fail-load', (ev) => {
+      if (!ev.isMainFrame || ev.errorCode == -3) {
+        return;
+      }
+      let q = {
+        errorCode: ev.errorCode,
+        errorName: chromeNetworkErrors[ev.errorCode],
+        url: ev.validatedURL,
+        type: 'loading-failed'
+      };
+      this.webview.send('err', q);
     });
     
     if (model.address) {
