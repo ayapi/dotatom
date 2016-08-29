@@ -163,6 +163,7 @@ export default {
       let fromItem = atom.workspace.getActivePaneItem();
       let disposable = atom.workspace.onDidOpen(() => {
         disposable.dispose();
+        fromPane.activate();
         fromPane.activateItem(fromItem);
       });
     }
