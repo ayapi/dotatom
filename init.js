@@ -8,19 +8,24 @@ function requireAtomCoreModule(name) {
 }
 const Pane = requireAtomCoreModule('pane');
 const PaneAxis = requireAtomCoreModule('pane-axis');
+const TextEditorComponent = requireAtomCoreModule('text-editor-component');
 
 if (os.platform() == 'win32' && os.release().startsWith('10.')) {
   // currently `transparent` isnt supported on win10 
   document.body.style.backgroundColor = "#000";
 }
 
+let cursorBlinkInterval = 1000;
+TextEditorComponent.prototype.cursorBlinkPeriod = cursorBlinkInterval;
 function setCursorBlinkInterval(editor) {
   // ref. https://github.com/olmokramer/atom-cursor-blink-interval
   let editorView = atom.views.getView(editor);
-  if(!editorView.component || !editorView.component.presenter) return;
+  if(!editorView.component || !editorView.component.presenter){
+    return;
+  }
   let editorPresenter = editorView.component.presenter;
   editorPresenter.stopBlinkingCursors(true);
-  editorPresenter.cursorBlinkPeriod = 1000;
+  editorPresenter.cursorBlinkPeriod = cursorBlinkInterval;
   editorPresenter.startBlinkingCursors();
 }
 atom.workspace.observeTextEditors(setCursorBlinkInterval);
