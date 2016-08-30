@@ -80,10 +80,14 @@ atom.workspace.onDidOpen((ev) => {
       pane.destroyItem(pitem);
     }
   });
-  if (item.constructor.name == 'ayapi-webview') {
-    return;
-  }
+  
   items = pane.getItems();
+  
+  let isWebviewPane = items.every((item) => {
+    return item.constructor.name == 'ayapi-webview'
+  });
+  if (isWebviewPane) return;
+  
   if (items.length > 1) {
     let newPane = pane.splitDown();
     pane.moveItemToPane(item, newPane, 0);
