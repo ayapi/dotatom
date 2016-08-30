@@ -14,6 +14,17 @@ if (os.platform() == 'win32' && os.release().startsWith('10.')) {
   document.body.style.backgroundColor = "#000";
 }
 
+function setCursorBlinkInterval(editor) {
+  // ref. https://github.com/olmokramer/atom-cursor-blink-interval
+  let editorView = atom.views.getView(editor);
+  if(!editorView.component || !editorView.component.presenter) return;
+  let editorPresenter = editorView.component.presenter;
+  editorPresenter.stopBlinkingCursors(true);
+  editorPresenter.cursorBlinkPeriod = 1000;
+  editorPresenter.startBlinkingCursors();
+}
+atom.workspace.observeTextEditors(setCursorBlinkInterval);
+
 Function.prototype.clone = function() {
   var that = this;
   var temp = function temporary() { return that.apply(this, arguments); };
