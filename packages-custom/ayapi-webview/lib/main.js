@@ -5,10 +5,9 @@ import { isWebUri } from 'valid-url';
 import openInDefaultBrowser from 'open';
 import AyapiWebview from './ayapi-webview';
 import AyapiWebviewElement from './ayapi-webview-element';
+import AyapiWebviewFindInPageElement from './ayapi-webview-find-in-page-element';
 import { CompositeDisposable } from 'atom';
 import { remote } from 'electron';
-
-atom.deserializers.add(AyapiWebview);
 
 export default {
 
@@ -130,10 +129,18 @@ export default {
   },
   
   deserializeAyapiWebviewElement(state) {
+    state.findInPage = atom.deserializers.deserialize(state.findInPage);
+    
     let view = new AyapiWebviewElement();
     view.initialize(state);
     this.views.set(state.uri, view);
     return view;
+  },
+  
+  deserializeAyapiWebviewFindInPageElement(state) {
+    let element = new AyapiWebviewFindInPageElement();
+    element.initialize(state);
+    return element;
   },
   
   buildView(model) {

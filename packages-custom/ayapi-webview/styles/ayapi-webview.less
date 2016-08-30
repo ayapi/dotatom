@@ -4,7 +4,32 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
-.ayapi-webview webview {
-  width: 100%;
-  height: 100%;
+ayapi-webview {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  webview {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+  }
+  ayapi-webview-find-in-page {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    
+    flex-grow: 0;
+    flex-shrink: 0;
+    
+    height: @component-line-height;
+    border-top: 1px solid @base-border-color;
+    
+    .ayapi-webview-find {
+      flex-grow: 1;
+    }
+    .ayapi-webview-find-count {
+      flex-grow: 0;
+      padding: 0 0.5em;
+    }
+  }
 }

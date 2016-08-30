@@ -6,13 +6,14 @@
     "enter": "ayapi-webview:load",
     "alt-enter": "ayapi-webview:load-as-new"
   },
-  "ayapi-webview": {
+  "ayapi-webview webview": {
     "f5": "ayapi-webview:reload",
     "ctrl-r": "ayapi-webview:reload",
     "alt-left": "ayapi-webview:backward-history",
     "alt-right": "ayapi-webview:forward-history",
     "ctrl-shift-i": "ayapi-webview:toggle-dev-tools",
     "f12": "ayapi-webview:toggle-dev-tools",
+    "ctrl-f": "ayapi-webview:find-in-page",
     "ctrl-down": "native!",
     "ctrl-up": "native!",
     "pagedown": "native!",
@@ -26,5 +27,9 @@
     "enter": "native!",
     "ctrl-c": "native!",
     "ctrl-v": "native!"
+  },
+  "ayapi-webview ayapi-webview-find-in-page": {
+    "enter": "ayapi-webview:find-next",
+    "shift-enter": "ayapi-webview:find-prev"
   }
 }

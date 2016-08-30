@@ -3,11 +3,13 @@ import path from 'path';
 import { EventsDelegation, DisposableEvents } from 'atom-utils';
 import { CompositeDisposable, Disposable, Emitter } from 'atom';
 import chromeNetworkErrors from 'chrome-network-errors';
+import AyapiWebviewFindInPageElement from './ayapi-webview-find-in-page-element';
 
 class AyapiWebviewElement extends HTMLElement {
   initialize(state) {
+    this._title = 'webview';
     this.uri = state.uri;
-    this.title = 'webview';
+    this.setFindInPageElement(state.findInPage);
     
     this.ready = false;
   }
@@ -58,7 +60,8 @@ class AyapiWebviewElement extends HTMLElement {
         'ayapi-webview:reload': this.reload.bind(this),
         'ayapi-webview:backward-history': this.backwardHistory.bind(this),
         'ayapi-webview:forward-history': this.forwardHistory.bind(this),
-        'ayapi-webview:toggle-dev-tools': this.toggleDevTools.bind(this)
+        'ayapi-webview:toggle-dev-tools': this.toggleDevTools.bind(this),
+        'ayapi-webview:find-in-page': this.showFindView.bind(this)
       })
     );
     
@@ -71,7 +74,7 @@ class AyapiWebviewElement extends HTMLElement {
     this.subscriptionForInitialLoad = null;
     
     this.emitter.on('page-title-updated', (ev) => {
-      this.title = ev.title;
+      this._title = ev.title;
       this.emitter.emit('did-change-title', ev.title);
     });
     
@@ -121,6 +124,49 @@ class AyapiWebviewElement extends HTMLElement {
     }
   }
   
+  setFindInPageElement(element) {
+    if (!element) {
+      this.findInPageElement = new AyapiWebviewFindInPageElement();
+      this.findInPageElement.initialize({});
+    } else {
+      this.findInPageElement = element;
+    }
+    this.appendChild(this.findInPageElement);
+    
+    if (this.findInPageElement.visible) {
+      this.findInPageElement.focus();
+    }
+    
+    this.subscriptions.add(
+      this.emitter.on('ipc-message', ({channel, args}) => {
+        if (channel !== 'found') {
+          return;
+        }
+        let {current, total} = args[0];
+        this.findInPageElement.current = current;
+        this.findInPageElement.total = total;
+      })
+    );
+    this.subscriptions.add(
+      this.emitter.on('dom-ready', () => {
+        this.findInPageElement.current = 0;
+        this.findInPageElement.total = 0;
+      })
+    );
+    this.subscriptions.add(
+      this.findInPageElement.onDidFindRequest((options) => {
+        this.webview.send('find', options);
+      })
+    );
+    this.subscriptions.add(
+      this.findInPageElement.onDidCancel(() => {
+        this.focus();
+        this.findInPageElement.hide();
+        this.webview.send('clearFound');
+      })
+    );
+  }
+  
   loadURL(url) {
     if (this.subscriptionForInitialLoad) {
       this.subscriptionForInitialLoad.dispose();
@@ -162,6 +208,11 @@ class AyapiWebviewElement extends HTMLElement {
     }
   }
   
+  showFindView() {
+    this.findInPageElement.show();
+    this.findInPageElement.focus();
+  }
+  
   getURL() {
     try {
       return this.webview.getURL();
@@ -185,11 +236,11 @@ class AyapiWebviewElement extends HTMLElement {
   }
   
   getTitle() {
-    return this.title;
+    return this._title;
   }
   
   getLongTitle() {
-    return this.model ? this.model.address : this.title;
+    return this.model ? this.model.address : this._title;
   }
   
   getURI() {
@@ -199,7 +250,8 @@ class AyapiWebviewElement extends HTMLElement {
   serialize() {
     return {
       deserializer: 'AyapiWebviewElement',
-      uri: this.getURI()
+      uri: this.getURI(),
+      findInPage: this.findInPageElement ? this.findInPageElement.serialize() : null
     }
   }
   
@@ -215,8 +267,9 @@ class AyapiWebviewElement extends HTMLElement {
       } catch (err) {
         // ignore error
       }
-      this.removeChild(this.webview);
     }
+    this.webview = null;
+    this.findInPageElement = null;
   }
 }
 

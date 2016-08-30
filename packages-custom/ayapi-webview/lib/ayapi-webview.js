@@ -35,3 +35,5 @@ export default class AyapiWebview {
   // }
 
 }
+
+atom.deserializers.add(AyapiWebview);
