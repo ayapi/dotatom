@@ -76,6 +76,11 @@ class AyapiWebviewFindInPageElement extends HTMLElement {
     });
     
     this.subscriptions.add(
+      this.addDisposableEventListener(editorElement, 'focus', (ev) => {
+        this.editor.selectAll();
+      })
+    );
+    this.subscriptions.add(
       this.addDisposableEventListener(this, 'focus', (ev) => {
         editorElement.focus();
       })
