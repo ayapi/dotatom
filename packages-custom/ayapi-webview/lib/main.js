@@ -6,8 +6,15 @@ import openInDefaultBrowser from 'open';
 import AyapiWebview from './ayapi-webview';
 import AyapiWebviewElement from './ayapi-webview-element';
 import AyapiWebviewFindInPageElement from './ayapi-webview-find-in-page-element';
-import { CompositeDisposable } from 'atom';
+import { CompositeDisposable, Disposable } from 'atom';
 import { remote } from 'electron';
+
+function disposableEventListener(object, name, listener) {
+  object.addEventListener(name, listener);
+  return new Disposable(() => {
+    object.removeEventListener(name, listener)
+  });
+}
 
 export default {
 
@@ -72,17 +79,21 @@ export default {
     
     let editorElement = atom.views.getView(editor);
     editorElement.classList.add('ayapi-webview-address');
-    editorElement.addEventListener('keydown', (ev) => {
-      switch (ev.key) {
-        case 'Escape':
-          atom.commands.dispatch(editorElement, 'core:cancel');
-          break;
-      }
-    });
-    editorElement.addEventListener('blur', (ev) => {
-      atom.commands.dispatch(editorElement, 'core:cancel');
-    });
     
+    this.subscriptions.add(
+      disposableEventListener(editorElement, 'keydown', (ev) => {
+        switch (ev.key) {
+          case 'Escape':
+            atom.commands.dispatch(editorElement, 'core:cancel');
+            break;
+        }
+      })
+    );
+    this.subscriptions.add(
+      disposableEventListener(editorElement, 'blur', (ev) => {
+        atom.commands.dispatch(editorElement, 'core:cancel');
+      })
+    );    
     this.subscriptions.add(
       atom.commands.add(editorElement, {
         'ayapi-webview:load': this.load.bind(this),

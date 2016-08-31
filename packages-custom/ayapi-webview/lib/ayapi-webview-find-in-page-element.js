@@ -64,16 +64,20 @@ class AyapiWebviewFindInPageElement extends HTMLElement {
   }
   
   bindEditorElementEvents(editorElement) {
-    editorElement.addEventListener('keydown', (ev) => {
-      switch (ev.key) {
-        case 'Escape':
-          atom.commands.dispatch(editorElement, 'core:cancel');
-          break;
-      }
-    });
-    editorElement.addEventListener('blur', (ev) => {
-      atom.commands.dispatch(editorElement, 'core:cancel');
-    });
+    this.subscriptions.add(
+      this.addDisposableEventListener(editorElement, 'keydown', (ev) => {
+        switch (ev.key) {
+          case 'Escape':
+            atom.commands.dispatch(editorElement, 'core:cancel');
+            break;
+        }
+      })
+    );
+    this.subscriptions.add(
+      this.addDisposableEventListener(editorElement, 'blur', (ev) => {
+        atom.commands.dispatch(editorElement, 'core:cancel');
+      })
+    );
     
     this.subscriptions.add(
       this.addDisposableEventListener(editorElement, 'focus', (ev) => {
@@ -85,7 +89,6 @@ class AyapiWebviewFindInPageElement extends HTMLElement {
         editorElement.focus();
       })
     );
-    
     this.subscriptions.add(
       atom.commands.add(editorElement, {
         'ayapi-webview:find-next': () => this.find(1),
