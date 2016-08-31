@@ -1,27 +1,6 @@
 import assert from 'power-assert';
 import http from 'http';
-
-function attachToDOM(element) {
-  let specContent = document.querySelector('#spec-content');
-  if (!specContent) {
-    specContent = document.createElement('div');
-    specContent.id = 'spec-content';
-    document.body.appendChild(specContent);
-  }
-  if (!specContent.contains(element)) {
-    return specContent.appendChild(element);
-  }
-};
-
-function domReadyPromise(webviewElement) {
-  return new Promise((resolve) => {
-    let disposable = webviewElement.onDomReady((url) => {
-      if (url === 'about:blank') return;
-      disposable.dispose();
-      resolve(url);
-    });
-  });
-}
+import {attachToDOM, domReadyPromise} from './helper';
 
 describe('main', function () {
   this.timeout(10000);
@@ -62,6 +41,60 @@ describe('main', function () {
       let item = pane.getActiveItem();
       assert(item.constructor.name == 'ayapi-webview');
       assert(item.getURL() === HTTP_URL);
+    });
+  });
+  
+  describe('webview', () => {
+    it('should receive focus correctly', async () => {
+      let panes = [];
+      let items = [];
+      panes[0] = atom.workspace.getActivePane();
+      panes[1] = panes[0].splitDown();
+      panes[2] = panes[1].splitDown();
+      
+      panes[1].activate();
+      items[0] = await atom.workspace.open(HTTP_URL + '0');
+      items[1] = await atom.workspace.open(HTTP_URL + '1');
+      
+      panes[2].activate();
+      items[2] = await atom.workspace.open(); // empty text-editor
+      
+      // pane0|   (empty pane)
+      // -----------------------
+      // pane1| (tab) wv0 | wv1
+      //      |    wv1 content
+      // -----------------------
+      // pane2|    text editor
+      
+      // now activeElement is text-editor on pane2
+      assert(document.activeElement != items[1].webview);
+      
+      panes[1].activate();
+      assert(document.activeElement == items[1].webview);
+      
+      panes[1].activateItem(items[0]);
+      assert(document.activeElement == items[0].webview);
+      
+      panes[1].activateItem(items[1]);
+      assert(document.activeElement == items[1].webview);
+      
+      panes[0].activate();
+      assert(document.activeElement != items[1].webview);
+      
+      panes[1].activate();
+      assert(document.activeElement == items[1].webview);
+      
+      panes[2].activate();
+      assert(document.activeElement != items[1].webview);
+      
+      panes[1].activate();
+      panes[1].activateItem(items[0]);
+      assert(document.activeElement == items[0].webview);
+      
+      panes.forEach((pane) => {
+        pane.destroyItems();
+        pane.destroy();
+      });
     });
   });
   
@@ -130,7 +163,7 @@ describe('main', function () {
       
       atom.commands.dispatch(editorElement, 'core:cancel');
       
-      let item = atom.workspace.getActivePaneItem();
+      let item = atom.workspace.getActivePaneItem(); // = text-editor
       assert(atom.views.getView(item).hasFocus());
       
       atom.workspace.paneForItem(item).destroyItem(item);
@@ -153,7 +186,10 @@ describe('main', function () {
       await domReadyPromise(item);
       
       assert(pane.getItems().length === 1);
-      assert(atom.workspace.getActivePaneItem().getURL() == HTTP_URL + 'new1');
+      
+      item = atom.workspace.getActivePaneItem();
+      assert(item.getURL() == HTTP_URL + 'new1');
+      assert(document.activeElement === item.webview);
       
       let panel = atom.workspace.panelForItem(editorElement.getModel());
       assert(!panel.isVisible());
@@ -183,6 +219,7 @@ describe('main', function () {
       assert(ev.item.constructor.name == 'ayapi-webview');
       assert(ev.item.getURL() == HTTP_URL);
       assert(pane.getItems().length === 2);
+      assert(document.activeElement === ev.item.webview);
       
       let panel = atom.workspace.panelForItem(editorElement.getModel());
       assert(!panel.isVisible());
@@ -214,6 +251,7 @@ describe('main', function () {
       assert(ev.item.constructor.name == 'ayapi-webview');
       assert(ev.item.getURL() == HTTP_URL + 'new');
       assert(pane.getItems().length === 2);
+      assert(document.activeElement === ev.item.webview);
       
       let panel = atom.workspace.panelForItem(editorElement.getModel());
       assert(!panel.isVisible());

@@ -24,7 +24,11 @@ class AyapiWebviewElement extends HTMLElement {
     this.subscriptions.add(
       atom.workspace.onDidChangeActivePaneItem((item) => {
         if (item == this) {
+          if (this.style.visibility == 'visible') {
+            return;
+          }
           this.style.visibility = 'visible';
+          this.focus();
           return;
         }
         let paneForActivatedItem = atom.workspace.paneForItem(item);
@@ -83,6 +87,16 @@ class AyapiWebviewElement extends HTMLElement {
     webview.setAttribute('preload', path.join(__dirname, 'preload.js'));
     this.appendChild(webview);
     this.webview = webview;
+  }
+  
+  attachedCallback() {
+    if (this.style.display == 'none') {
+      this.style.visibility = 'hidden';
+      this.style.display = null;
+    } else {
+      this.style.visibility = 'visible';
+      this.style.display = null;
+    }
   }
   
   setModel(model) {
