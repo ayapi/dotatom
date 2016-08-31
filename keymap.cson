@@ -2,6 +2,8 @@
 	'ctrl-shift-w': 'unset!'
 	'ctrl-alt-i': 'unset!'
 	'ctrl-alt-o': 'unset!'
+	'ctrl--': 'unset!'
+	'ctrl-+': 'unset!'
 
 'body .native-key-bindings':
 	'alt-left': 'unset!'
