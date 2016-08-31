@@ -1,6 +1,8 @@
 [
   ["enable-transparent-visuals"],
-  ["disable-gpu"],
+  ["ignore-gpu-blacklist"],
+  ["disable-gpu-sandbox"],
   ["disable-direct-write"],
-  ["disable-directwrite-for-ui"]
+  ["disable-directwrite-for-ui"],
+  ["disable-smooth-scrolling"]
 ]
