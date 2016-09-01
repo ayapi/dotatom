@@ -26,7 +26,14 @@
     "delete": "native!",
     "enter": "native!",
     "ctrl-c": "native!",
-    "ctrl-v": "native!"
+    "ctrl-v": "native!",
+    "ctrl-z": "native!",
+    "ctrl-y": "native!",
+    "ctrl-shift-z": "native!",
+    "shift-left": "native!",
+    "shift-right": "native!",
+    "shift-up": "native!",
+    "shift-down": "native!"
   },
   "ayapi-webview ayapi-webview-find-in-page": {
     "enter": "ayapi-webview:find-next",
