@@ -14,7 +14,11 @@
 'atom-workspace atom-text-editor':
 	'alt-left': 'unset!'
 	'alt-right': 'unset!'
-
+	'ctrl-left': 'editor:move-to-previous-subword-boundary'
+	'ctrl-right': 'editor:move-to-next-subword-boundary'
+	'ctrl-shift-left': 'editor:select-to-previous-subword-boundary'
+	'ctrl-shift-right': 'editor:select-to-next-subword-boundary'
+	
 'atom-workspace atom-text-editor:not([mini])':
 	'ctrl-down': 'custom:editor-scroll-down'
 	'ctrl-up': 'custom:editor-scroll-up'
