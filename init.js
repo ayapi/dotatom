@@ -250,7 +250,7 @@ function neighborPaneViewInDirection(direction) {
   
   let boxForintersect = box;
   let item = pane.getActiveItem();
-  if (item.constructor.name == 'TextEditor' && item.cursors.length > 0) {
+  if (item && item.constructor.name == 'TextEditor' && item.cursors.length > 0) {
     let cursor = item.cursors.find((cursor) => {
       return cursor.isVisible();
     });
