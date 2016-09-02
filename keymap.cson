@@ -5,6 +5,10 @@
 	'ctrl--': 'unset!'
 	'ctrl-+': 'unset!'
 
+'body':
+	'ctrl-tab ^ctrl': 'unset!'
+	'ctrl-shift-tab ^ctrl': 'unset!'
+
 'body .native-key-bindings':
 	'alt-left': 'unset!'
 	'alt-right': 'unset!'
@@ -49,6 +53,8 @@
 	'ctrl-alt-down' : 'custom:swap-pane-with-down'
 	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
 	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
+	'ctrl-tab': 'pane:show-next-item'
+	'ctrl-shift-tab': 'pane:show-previous-item'
 	
 'atom-workspace .ayapi-term .xterm':
 	'ctrl-down': 'ayapi-term:scroll-down'
