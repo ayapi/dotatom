@@ -63,7 +63,14 @@ export default {
   deactivate() {
     this.subscriptions.dispose();
     this.models.forEach((model) => {
-      atom.views.getView(model).destroy();
+      let pane = atom.workspace.paneForURI(model.uri);
+      if (pane) {
+        pane.destroyItem(pane.itemForURI(model.uri));
+      }
+      let view = this.views.get(model.uri);
+      if (view) {
+        view.destroy();
+      }
       model.destroy();
     });
   },
