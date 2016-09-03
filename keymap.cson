@@ -78,3 +78,5 @@
 	'alt-right': 'custom:focus-pane-on-right'
 	'ctrl-home': 'ayapi-webview:backward-history'
 	'ctrl-end': 'ayapi-webview:forward-history'
+	'ctrl-+': 'ayapi-webview:zoom-in'
+	'ctrl--': 'ayapi-webview:zoom-out'
