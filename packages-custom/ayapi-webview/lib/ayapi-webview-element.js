@@ -12,6 +12,7 @@ class AyapiWebviewElement extends HTMLElement {
     this.setFindInPageElement(state.findInPage);
     
     this.ready = false;
+    this.zoom = 0;
   }
   
   createdCallback() {
@@ -64,6 +65,8 @@ class AyapiWebviewElement extends HTMLElement {
         'ayapi-webview:reload': this.reload.bind(this),
         'ayapi-webview:backward-history': this.backwardHistory.bind(this),
         'ayapi-webview:forward-history': this.forwardHistory.bind(this),
+        'ayapi-webview:zoom-in': this.zoomIn.bind(this),
+        'ayapi-webview:zoom-out': this.zoomOut.bind(this),
         'ayapi-webview:toggle-dev-tools': this.toggleDevTools.bind(this),
         'ayapi-webview:find-in-page': this.showFindView.bind(this)
       })
@@ -80,6 +83,11 @@ class AyapiWebviewElement extends HTMLElement {
     this.emitter.on('page-title-updated', (ev) => {
       this._title = ev.title;
       this.emitter.emit('did-change-title', ev.title);
+    });
+    
+    this.emitter.on('load-commit', ({url, isMainFrame}) => {
+      if (!isMainFrame) return;
+      this.zoom = 0;
     });
     
     webview.setAttribute('src', 'about:blank');
@@ -212,6 +220,16 @@ class AyapiWebviewElement extends HTMLElement {
   
   forwardHistory() {
     this.webview.goForward();
+  }
+  
+  zoomIn() {
+    this.zoom++;
+    this.webview.setZoomLevel(this.zoom);
+  }
+  
+  zoomOut() {
+    this.zoom--;
+    this.webview.setZoomLevel(this.zoom);
   }
   
   toggleDevTools() {
