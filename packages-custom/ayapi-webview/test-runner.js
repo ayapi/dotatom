@@ -45,8 +45,8 @@ function optionalConfigurationFunction(mocha) {
   // simulating 'apm link dev'
   // for use `atom.packages.activatePackage('package-name')` in specs
   let packageName = require('./package.json').name;
-  let packagesDir = atom.packages.getPackageDirPaths().find((path) => {
-    return path.endsWith('/dev/packages');
+  let packagesDir = atom.packages.getPackageDirPaths().find((dir) => {
+    return dir.endsWith(path.sep + path.join('dev', 'packages'));
   });
   try {
     fs.makeTreeSync(packagesDir);
