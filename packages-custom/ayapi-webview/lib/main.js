@@ -1,6 +1,7 @@
 'use babel';
 
 import url from 'url';
+import dns from 'dns';
 import { isWebUri } from 'valid-url';
 import openInDefaultBrowser from 'open';
 import AyapiWebview from './ayapi-webview';
@@ -191,7 +192,7 @@ export default {
     }
   },
   
-  load(ev) {
+  async load(ev) {
     let pane = atom.workspace.getActivePane();
     let item = pane.getActiveItem();
     if (!(item && item.constructor.name === 'ayapi-webview')) {
@@ -199,24 +200,38 @@ export default {
       return;
     }
     let webviewElement = atom.views.getView(item);
-    let address = this.convertInvalidURLToGoogle(this.editor.getText());
-    webviewElement.loadURL(address);
     webviewElement.focus();
     this.panel.hide();
+    let address = await this.convertInvalidURLToGoogle(this.editor.getText());
+    webviewElement.loadURL(address);
   },
   
-  loadAsNew(ev) {
-    let address = this.convertInvalidURLToGoogle(this.editor.getText());
-    atom.workspace.open(address);
+  async loadAsNew(ev) {
     this.panel.hide();
+    let address = await this.convertInvalidURLToGoogle(this.editor.getText());
+    atom.workspace.open(address);
   },
   
-  convertInvalidURLToGoogle(address) {
-    if (url.parse(address).protocol) {
+  async convertInvalidURLToGoogle(address) {
+    let protocol = url.parse(address).protocol;
+    if (protocol && protocol.startsWith('http')) {
       return address;
     }
-    if (address.includes('.') && isWebUri('http://' + address)) {
-      return 'http://' + address;
+    if (isWebUri('http://' + address)) {
+      try {
+        let {hostname} = url.parse('http://' + address);
+        let result = await new Promise((resolve, reject) => {
+          dns.lookup(hostname, (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+          });
+        });
+        if (result) {
+          return 'http://' + address;
+        }
+      } catch(err) {
+        // ignore error
+      }
     }
     return `https://www.google.co.jp/search?q=${encodeURIComponent(address)}`;
   },
