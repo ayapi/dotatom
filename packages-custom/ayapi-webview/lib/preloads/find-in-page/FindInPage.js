@@ -14,7 +14,6 @@ class FindInPage extends EventEmitter {
     this.current = 0;
     this.total = 0;
     this.registerElements();
-    this.addStyle();
   }
   registerElements() {
     document.registerElement(`${elementName}-start`, {
@@ -25,14 +24,6 @@ class FindInPage extends EventEmitter {
       extends: 'span',
       prototype: Object.create(HTMLSpanElement.prototype)
     });
-  }
-  addStyle() {
-    const style = document.createElement('style');
-    style.appendChild(document.createTextNode(''));
-    document.head.appendChild(style);
-    style.sheet.insertRule(
-      '::selection {background: rgba(0,0,0,0.01) !important}'
-    , 0);
   }
   find(options) {
     if (options.text !== this.text) {
@@ -57,6 +48,7 @@ class FindInPage extends EventEmitter {
   clear() {
     this.removeHighlight();
     this.removeHighlightElement();
+    this.removeStyle();
     this.removeAllMarkers();
     this.text = '';
     this.current = 0;
@@ -154,6 +146,26 @@ class FindInPage extends EventEmitter {
       .join('|');
     return new RegExp(source, 'gi');
   }
+  addStyle() {
+    if (this.styleElement) {
+      return;
+    }
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(''));
+    document.head.appendChild(style);
+    style.sheet.insertRule(
+      '::selection {background: rgba(0,0,0,0.01) !important}'
+    , 0);
+    this.styleElement = style;
+  }
+  removeStyle() {
+    if (!this.styleElement) {
+      return;
+    }
+    this.styleElement.sheet.deleteRule(0);
+    this.styleElement.parentNode.removeChild(this.styleElement);
+    this.styleElement = null;
+  }
   addHighlight(id) {
     const markerPair = ['start', 'end'].map(type => {
       return document.querySelector(
@@ -170,6 +182,8 @@ class FindInPage extends EventEmitter {
       this.highlightElement = element;
     }
     this.highlightElement.setModel(this.highlight);
+    
+    this.addStyle();
   }
   removeHighlight() {
     if (this.highlight) {
