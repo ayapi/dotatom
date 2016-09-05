@@ -97,7 +97,13 @@ class AyapiWebviewElement extends HTMLElement {
     webview.setAttribute('src', 'about:blank');
     webview.setAttribute('partition', 'persist:atom-ayapi-webview');
     webview.setAttribute('preload', path.join(__dirname, 'preload.js'));
-    this.appendChild(webview);
+    
+    const container = document.createElement('div');
+    container.classList.add('ayapi-webview-container');
+    container.classList.add('native-key-bindings');
+    container.appendChild(webview);
+    this.appendChild(container);
+    
     this.webview = webview;
   }
   
@@ -186,6 +192,7 @@ class AyapiWebviewElement extends HTMLElement {
     );
     this.subscriptions.add(
       footer.onDidFindRequest((options) => {
+        this.focus();
         this.webview.send('find', options);
       })
     );
@@ -194,6 +201,31 @@ class AyapiWebviewElement extends HTMLElement {
         this.focus();
         footer.hide();
         this.webview.send('clearFound');
+      })
+    );
+    this.subscriptions.add(
+      atom.commands.add(this.webview, {
+        'ayapi-webview:find-next': (ev) => {
+          if (footer.visible) {
+            footer.find(1);
+          } else {
+            ev.abortKeyBinding();
+          }
+        },
+        'ayapi-webview:find-prev': (ev) => {
+          if (footer.visible) {
+            footer.find(-1);
+          } else {
+            ev.abortKeyBinding();
+          }
+        },
+        'core:cancel': (ev) => {
+          if (footer.visible) {
+            footer.cancel();
+          } else {
+            ev.abortKeyBinding();
+          }
+        }
       })
     );
     
