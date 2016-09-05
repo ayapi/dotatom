@@ -104,6 +104,8 @@
 	'ctrl-shift-tab': 'pane:show-previous-item'
 
 'atom-workspace ayapi-webview webview':
+	'ctrl-home': 'ayapi-webview:backward-history'
+	'ctrl-end': 'ayapi-webview:forward-history'
 	'alt-left': 'custom:focus-pane-on-left'
 	'alt-right': 'custom:focus-pane-on-right'
 	'alt-up': 'custom:focus-pane-above'
