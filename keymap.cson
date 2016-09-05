@@ -8,13 +8,39 @@
 	'ctrl-shift-tab ^ctrl': 'unset!'
 	'ctrl--': 'unset!'
 	'ctrl-+': 'unset!'
-
-'body .native-key-bindings':
+	'ctrl-q': 'unset!'
 	'alt-left': 'unset!'
 	'alt-right': 'unset!'
 	'alt-up': 'unset!'
 	'alt-down': 'unset!'
-	
+
+'body .native-key-bindings':
+	'alt-left': 'native!'
+	'alt-right': 'native!'
+	'alt-up': 'native!'
+	'alt-down': 'native!'
+	'ctrl-down': 'native!'
+	'ctrl-up': 'native!'
+	'pagedown': 'native!'
+	'pageup': 'native!'
+	'left': 'native!'
+	'right': 'native!'
+	'up': 'native!'
+	'down': 'native!'
+	'backspace': 'native!'
+	'delete': 'native!'
+	'ctrl-c': 'native!'
+	'ctrl-v': 'native!'
+	'ctrl-z': 'native!'
+	'ctrl-y': 'native!'
+	'ctrl-shift-z': 'native!'
+	'shift-left': 'native!'
+	'shift-right': 'native!'
+	'shift-up': 'native!'
+	'shift-down': 'native!'
+	'tab': 'native!'
+	'shift-tab': 'native!'
+
 'atom-workspace atom-text-editor':
 	'alt-left': 'unset!'
 	'alt-right': 'unset!'
@@ -59,6 +85,8 @@
 'atom-workspace .ayapi-term .xterm':
 	'ctrl-down': 'ayapi-term:scroll-down'
 	'ctrl-up': 'ayapi-term:scroll-up'
+
+'atom-workspace .ayapi-term .xterm':
 	'alt-left': 'custom:focus-pane-on-left'
 	'alt-right': 'custom:focus-pane-on-right'
 	'alt-up': 'custom:focus-pane-above'
@@ -72,11 +100,22 @@
 	'ctrl-alt-down' : 'custom:swap-pane-with-down'
 	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
 	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
-	
+	'ctrl-tab': 'pane:show-next-item'
+	'ctrl-shift-tab': 'pane:show-previous-item'
+
 'atom-workspace ayapi-webview webview':
 	'alt-left': 'custom:focus-pane-on-left'
 	'alt-right': 'custom:focus-pane-on-right'
-	'ctrl-home': 'ayapi-webview:backward-history'
-	'ctrl-end': 'ayapi-webview:forward-history'
-	'ctrl-+': 'ayapi-webview:zoom-in'
-	'ctrl--': 'ayapi-webview:zoom-out'
+	'alt-up': 'custom:focus-pane-above'
+	'alt-down': 'custom:focus-pane-below'
+	'alt-x': 'custom:close-pane-and-focus-previous-if-possible'
+	'alt--': 'pane:decrease-size'
+	'alt-+': 'pane:increase-size'
+	'ctrl-alt-right': 'custom:swap-pane-with-right'
+	'ctrl-alt-left': 'custom:swap-pane-with-left'
+	'ctrl-alt-up' : 'custom:swap-pane-with-up'
+	'ctrl-alt-down' : 'custom:swap-pane-with-down'
+	'ctrl-alt-shift-right': 'custom:move-pane-to-right'
+	'ctrl-alt-shift-left': 'custom:move-pane-to-left'
+	'ctrl-tab': 'pane:show-next-item'
+	'ctrl-shift-tab': 'pane:show-previous-item'
