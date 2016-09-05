@@ -11,7 +11,7 @@ class FindInPage extends EventEmitter {
   constructor() {
     super();
     this.text = '';
-    this.current = 0;
+    this.current = -1;
     this.total = 0;
     this.registerElements();
   }
@@ -30,9 +30,10 @@ class FindInPage extends EventEmitter {
       this.total = this.markAll(options.text.split(' '));
       this.text = options.text;
       if (this.total > 0) {
+        this.current = 0;
         this.addHighlight(0);
       }
-    } else {
+    } else if (this.total > 0) {
       this.current += options.direction;
       if (this.current > this.total - 1) {
         this.current = 0;
