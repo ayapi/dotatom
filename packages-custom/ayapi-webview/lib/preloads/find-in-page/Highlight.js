@@ -52,7 +52,9 @@ class Highlight extends EventEmitter {
   getVisibleAncestorRects(target) {
     let rects;
     while(!rects) {
-      rects = [... target.getClientRects()];
+      // Windowsインストーラー版atomのelectronのバージョンぁがるまでspreadゎ保留
+      // rects = [... target.getClientRects()];
+      rects = [].slice.call(target.getClientRects());
       let areCollapsed = rects.every((rect) => {
         return rect.width == 0 && rect.height == 0;
       });
