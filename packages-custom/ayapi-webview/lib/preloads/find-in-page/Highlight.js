@@ -82,7 +82,7 @@ class Highlight extends EventEmitter {
     this.range.detach();
     this.range = null;
     this.target = null;
-    this.rect = null;
+    this.rects = null;
     this.emit('did-destroy');
     this.removeAllListeners();
   }
