@@ -93,7 +93,7 @@ class FindInPage extends EventEmitter {
     const nodeListKeys = Array.from(nodeList.keys());
     function findKeyFromTextIndex(index) {
       let keyIndex = nodeListKeys.findIndex(k => k > index);
-      if (!keyIndex) {
+      if (keyIndex < 0) {
         keyIndex = nodeListKeys.length;
       }
       return nodeListKeys[keyIndex - 1];
