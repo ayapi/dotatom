@@ -37,6 +37,9 @@ class HighlightElement extends HTMLElement {
     const root = this.createShadowRoot();
     root.innerHTML = `
       <style>
+        :host {
+          pointer-events: none;
+        }
         div {
           position:absolute;
           pointer-events: none;
