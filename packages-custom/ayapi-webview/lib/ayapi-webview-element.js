@@ -3,6 +3,7 @@ import path from 'path';
 import { EventsDelegation, DisposableEvents } from 'atom-utils';
 import { CompositeDisposable, Disposable, Emitter } from 'atom';
 import chromeNetworkErrors from 'chrome-network-errors';
+import AyapiWebviewFindInPageOverlayElement from './ayapi-webview-find-in-page-overlay-element';
 import AyapiWebviewFindInPageElement from './ayapi-webview-find-in-page-element';
 
 class AyapiWebviewElement extends HTMLElement {
@@ -41,6 +42,11 @@ class AyapiWebviewElement extends HTMLElement {
       })
     );
     
+    this.createWebviewElement();
+    this.createOverlayElement();
+  }
+  
+  createWebviewElement() {
     let webview = document.createElement('webview');
     let webviewEvents = {};
     [
@@ -97,6 +103,13 @@ class AyapiWebviewElement extends HTMLElement {
     this.webview = webview;
   }
   
+  createOverlayElement() {
+    let overlay = document.createElement('div');
+    overlay.classList.add('ayapi-webview-overlay');
+    this.appendChild(overlay);
+    this.overlay = overlay;
+  }
+  
   attachedCallback() {
     if (this.style.display == 'none') {
       this.style.visibility = 'hidden';
@@ -147,46 +160,63 @@ class AyapiWebviewElement extends HTMLElement {
   }
   
   setFindInPageElement(element) {
+    let footer;
     if (!element) {
-      this.findInPageElement = new AyapiWebviewFindInPageElement();
-      this.findInPageElement.initialize({});
+      footer = new AyapiWebviewFindInPageElement();
+      footer.initialize({});
     } else {
-      this.findInPageElement = element;
+      footer = element;
     }
-    this.appendChild(this.findInPageElement);
+    this.appendChild(footer);
     
-    if (this.findInPageElement.visible) {
-      this.findInPageElement.focus();
+    if (footer.visible) {
+      footer.focus();
     }
+    
+    let overlayChild = new AyapiWebviewFindInPageOverlayElement();
+    overlayChild.initialize();
+    this.overlay.appendChild(overlayChild);
     
     this.subscriptions.add(
       this.emitter.on('ipc-message', ({channel, args}) => {
-        if (channel !== 'found') {
+        if (!channel.startsWith('find-in-page:')) {
           return;
         }
-        let {current, total} = args[0];
-        this.findInPageElement.current = current;
-        this.findInPageElement.total = total;
+        switch (channel.split(':')[1]) {
+          case 'found':
+            let {current, total} = args[0];
+            footer.current = current + 1;
+            footer.total = total;
+          break;
+          case 'updateOverlay':
+            overlayChild.update(args[0]);
+            overlayChild.show();
+          break;
+        }
       })
     );
     this.subscriptions.add(
       this.emitter.on('dom-ready', () => {
-        this.findInPageElement.current = 0;
-        this.findInPageElement.total = 0;
+        footer.current = 0;
+        footer.total = 0;
+        overlayChild.hide();
       })
     );
     this.subscriptions.add(
-      this.findInPageElement.onDidFindRequest((options) => {
+      footer.onDidFindRequest((options) => {
         this.webview.send('find', options);
       })
     );
     this.subscriptions.add(
-      this.findInPageElement.onDidCancel(() => {
+      footer.onDidCancel(() => {
         this.focus();
-        this.findInPageElement.hide();
+        footer.hide();
+        overlayChild.hide();
         this.webview.send('clearFound');
       })
     );
+    
+    this.findInPageElement = footer;
   }
   
   loadURL(url) {

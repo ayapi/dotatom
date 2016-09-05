@@ -73,11 +73,6 @@ class AyapiWebviewFindInPageElement extends HTMLElement {
         }
       })
     );
-    this.subscriptions.add(
-      this.addDisposableEventListener(editorElement, 'blur', (ev) => {
-        atom.commands.dispatch(editorElement, 'core:cancel');
-      })
-    );
     
     this.subscriptions.add(
       this.addDisposableEventListener(editorElement, 'focus', (ev) => {

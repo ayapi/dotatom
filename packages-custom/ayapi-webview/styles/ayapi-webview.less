@@ -5,6 +5,7 @@
 @import "ui-variables";
 
 ayapi-webview {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -23,6 +24,7 @@ ayapi-webview {
     
     height: @component-line-height;
     border-top: 1px solid @base-border-color;
+    background: @base-background-color;
     
     .ayapi-webview-find {
       flex-grow: 1;
@@ -30,6 +32,23 @@ ayapi-webview {
     .ayapi-webview-find-count {
       flex-grow: 0;
       padding: 0 0.5em;
+    }
+  }
+  .ayapi-webview-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    >* {
+      position: absolute;
+      pointer-events: none;
+    }
+    ayapi-webview-find-in-page-overlay {
+      box-sizing:content-box;
+      background: rgba(255,255,0, .3);
+      outline: 2px dotted #FF0;
+      box-shadow: 0 0 0 2px rgba(128,128,128,.5);
     }
   }
 }
