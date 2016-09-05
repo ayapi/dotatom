@@ -157,12 +157,16 @@ class FindInPage extends EventEmitter {
     style.sheet.insertRule(
       '::selection {background: rgba(0,0,0,0.01) !important}'
     , 0);
+    style.sheet.insertRule(
+      '*:focus {outline: none; !important}'
+    , 1);
     this.styleElement = style;
   }
   removeStyle() {
     if (!this.styleElement) {
       return;
     }
+    this.styleElement.sheet.deleteRule(0);
     this.styleElement.sheet.deleteRule(0);
     this.styleElement.parentNode.removeChild(this.styleElement);
     this.styleElement = null;

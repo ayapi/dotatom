@@ -19,13 +19,7 @@ class Highlight extends EventEmitter {
     return range;
   }
   update() {
-    const {target, rects} = this.getVisibleAncestor(this.range);
-    if (this.target != target) {
-      this.target = target;
-      try {
-        target.focus();
-      } catch(err) {}
-    }
+    const rects = this.getVisibleAncestorRects(this.range);
     
     if (diff(rects, this.rects)) {
       this.rects = rects;
@@ -38,9 +32,24 @@ class Highlight extends EventEmitter {
       this.selection = window.getSelection();
       this.selection.removeAllRanges();
       this.selection.addRange(this.range);
+      
+      this.focusAncestor(this.range.startContainer);
     }
   }
-  getVisibleAncestor(target) {
+  focusAncestor(target) {
+    document.activeElement.blur();
+    while(true) {
+      target.focus();
+      if (document.activeElement == target) {
+        break;
+      }
+      if (target.parentNode.nodeType != 1) {
+        break;
+      }
+      target = target.parentNode;
+    }
+  }
+  getVisibleAncestorRects(target) {
     let rects;
     while(!rects) {
       rects = [... target.getClientRects()];
@@ -63,19 +72,16 @@ class Highlight extends EventEmitter {
         target = parent;
       }
     }
-    return {
-      target: target,
-      rects: rects.map(rect => {
-        return {
-          top: rect.top,
-          left: rect.left,
-          right: rect.right,
-          bottom: rect.bottom,
-          width: rect.width,
-          height: rect.height
-        }
-      })
-    };
+    return rects.map(rect => {
+      return {
+        top: rect.top,
+        left: rect.left,
+        right: rect.right,
+        bottom: rect.bottom,
+        width: rect.width,
+        height: rect.height
+      }
+    });
   }
   destroy() {
     clearInterval(this.timer);
