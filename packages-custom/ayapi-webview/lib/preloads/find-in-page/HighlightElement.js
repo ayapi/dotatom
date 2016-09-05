@@ -1,13 +1,6 @@
 'use babel';
 
 class HighlightElement extends HTMLElement {
-  get visible() {
-    return this._visible;
-  }
-  set visible(value) {
-    this._visible = value;
-    this.style.display = value ? null : 'none';
-  }
   get rects() {
     return this._rects;
   }
@@ -30,7 +23,6 @@ class HighlightElement extends HTMLElement {
   }
   constructor() {
     super();
-    this._visible = false;
     this._rects = [];
   }
   initialize() {
@@ -64,12 +56,6 @@ class HighlightElement extends HTMLElement {
         }
       </style>
     `;
-  }
-  hide() {
-    this.visible = false;
-  }
-  show() {
-    this.visible = true;
   }
   ensureChildrenCount(count) {
     const divCount = this.shadowRoot.children.length - 1;
