@@ -1,7 +1,7 @@
 const EventEmitter = require('events').EventEmitter;
 const diff = require('deep-diff').diff;
 
-class Highlighter extends EventEmitter {
+class Highlight extends EventEmitter {
   constructor(markerPair) {
     super();
     
@@ -9,23 +9,8 @@ class Highlighter extends EventEmitter {
     this.range = this.createRange();
     this.selection = null;
     this.target = null;
-    this.rect = {};
+    this.rects = [];
     this.timer = setInterval(this.update.bind(this), 60);
-    this.addStyle();
-  }
-  addStyle() {
-    const style = document.createElement('style');
-    style.appendChild(document.createTextNode(''));
-    document.head.appendChild(style);
-    style.sheet.insertRule(
-      '::selection {background: rgba(0,0,0,0.01) !important}'
-    , 0);
-    this.styleElement = style;
-  }
-  removeStyle() {
-    this.styleElement.sheet.deleteRule(0);
-    document.head.removeChild(this.styleElement);
-    this.styleElement = null;
   }
   createRange() {
     const range = document.createRange();
@@ -34,7 +19,7 @@ class Highlighter extends EventEmitter {
     return range;
   }
   update() {
-    const {target, rect} = this.getVisibleAncestor(this.range);
+    const {target, rects} = this.getVisibleAncestor(this.range);
     if (this.target != target) {
       this.target = target;
       try {
@@ -42,9 +27,9 @@ class Highlighter extends EventEmitter {
       } catch(err) {}
     }
     
-    if (diff(rect, this.rect)) {
-      this.rect = rect;
-      this.emit('did-change-rect', rect);
+    if (diff(rects, this.rects)) {
+      this.rects = rects;
+      this.emit('did-change-rects', rects);
     }
     
     if (!this.selection || (
@@ -56,15 +41,16 @@ class Highlighter extends EventEmitter {
     }
   }
   getVisibleAncestor(target) {
-    let rect;
-    while(!rect) {
-      let rects = [... target.getClientRects()];
-      if (rects.length > 0) {
-        rect = rects.find((rect) => {
-          return rect.width != 0 && rect.height != 0;
-        }) || rects[0];
+    let rects;
+    while(!rects) {
+      rects = [... target.getClientRects()];
+      let areCollapsed = rects.every((rect) => {
+        return rect.width == 0 && rect.height == 0;
+      });
+      if (areCollapsed) {
+        rects = [];
       }
-      if (!rect) {
+      if (rects.length == 0) {
         let parent;
         if (target instanceof Range) {
           parent = target.commonAncestorContainer;
@@ -79,25 +65,27 @@ class Highlighter extends EventEmitter {
     }
     return {
       target: target,
-      rect: {
-        top: rect.top,
-        left: rect.left,
-        right: rect.right,
-        bottom: rect.bottom,
-        width: rect.width,
-        height: rect.height
-      }
+      rects: rects.map(rect => {
+        return {
+          top: rect.top,
+          left: rect.left,
+          right: rect.right,
+          bottom: rect.bottom,
+          width: rect.width,
+          height: rect.height
+        }
+      })
     };
   }
   destroy() {
     clearInterval(this.timer);
-    this.removeStyle();
-    this.removeAllListeners();
     this.range.detach();
     this.range = null;
     this.target = null;
     this.rect = null;
+    this.emit('did-destroy');
+    this.removeAllListeners();
   }
 }
 
-module.exports = Highlighter;
+module.exports = Highlight;

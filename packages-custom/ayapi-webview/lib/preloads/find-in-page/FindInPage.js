@@ -1,7 +1,8 @@
 const EventEmitter = require('events').EventEmitter;
 const escapeStringRegexp = require('escape-string-regexp');
 
-const Highlighter = require('./Highlighter');
+const Highlight = require('./Highlight');
+const HighlightElement = require('./HighlightElement');
 
 const elementName = "ayapi-webview-find-in-page-marker";
 const skipElementNames = ['NOSCRIPT', 'SCRIPT', 'STYLE'];
@@ -13,6 +14,7 @@ class FindInPage extends EventEmitter {
     this.current = 0;
     this.total = 0;
     this.registerElements();
+    this.addStyle();
   }
   registerElements() {
     document.registerElement(`${elementName}-start`, {
@@ -24,12 +26,20 @@ class FindInPage extends EventEmitter {
       prototype: Object.create(HTMLSpanElement.prototype)
     });
   }
+  addStyle() {
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(''));
+    document.head.appendChild(style);
+    style.sheet.insertRule(
+      '::selection {background: rgba(0,0,0,0.01) !important}'
+    , 0);
+  }
   find(options) {
     if (options.text !== this.text) {
       this.total = this.markAll(options.text.split(' '));
       this.text = options.text;
       if (this.total > 0) {
-        this.addHighlighter(0);
+        this.addHighlight(0);
       }
     } else {
       this.current += options.direction;
@@ -39,20 +49,21 @@ class FindInPage extends EventEmitter {
       if (this.current < 0) {
         this.current = this.total - 1;
       }
-      this.removeHighlighter();
-      this.addHighlighter(this.current);
+      this.removeHighlight();
+      this.addHighlight(this.current);
     }
     this.emit('did-find', {total: this.total, current: this.current});
   }
   clear() {
-    this.removeHighlighter();
+    this.removeHighlight();
+    this.removeHighlightElement();
     this.removeAllMarkers();
     this.text = '';
     this.current = 0;
     this.total = 0;
   }
   markAll(words) {
-    this.removeHighlighter();
+    this.removeHighlight();
     this.removeAllMarkers();
     
     words = words.filter(word => !!word);
@@ -143,31 +154,43 @@ class FindInPage extends EventEmitter {
       .join('|');
     return new RegExp(source, 'gi');
   }
-  addHighlighter(id) {
+  addHighlight(id) {
     const markerPair = ['start', 'end'].map(type => {
       return document.querySelector(
         `${elementName}-${type}[data-id="${id}"]`
       )
     });
-    this.highlighter = new Highlighter(markerPair);
-    this.highlighter.once('did-change-rect', this.scrollToRect.bind(this));
-    this.highlighter.on('did-change-rect', rect => {
-      this.emit('did-change-highlight', {
-        rect: rect,
-        offset: {
-          x: window.pageXOffset,
-          y: window.pageYOffset
-        }
-      });
-    });
-  }
-  removeHighlighter() {
-    if (this.highlighter) {
-      this.highlighter.destroy();
+    this.highlight = new Highlight(markerPair);
+    this.highlight.once('did-change-rects', this.scrollToRect.bind(this));
+    
+    if (!this.highlightElement) {
+      const element = new HighlightElement();
+      element.initialize();
+      document.getElementsByTagName('html')[0].appendChild(element);
+      this.highlightElement = element;
     }
-    this.highlighter = null;
+    this.highlightElement.setModel(this.highlight);
   }
-  scrollToRect(rect) {
+  removeHighlight() {
+    if (this.highlight) {
+      this.highlight.destroy();
+    }
+    this.highlight = null;
+  }
+  removeHighlightElement() {
+    if (this.highlightElement) {
+      this.highlightElement.parentNode.removeChild(this.highlightElement);
+      this.highlightElement = null;
+    }
+  }
+  scrollToRect(rects) {
+    if (rects.length == 0) {
+      return;
+    }
+    const rect = rects.find(rect => {
+      return rect.width != 0 && rect.height != 0
+    }) || rects[0];
+    
     let targetY = 0;
     let targetX = 0;
     let pageH = window.innerHeight;

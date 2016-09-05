@@ -3,7 +3,6 @@ import path from 'path';
 import { EventsDelegation, DisposableEvents } from 'atom-utils';
 import { CompositeDisposable, Disposable, Emitter } from 'atom';
 import chromeNetworkErrors from 'chrome-network-errors';
-import AyapiWebviewFindInPageOverlayElement from './ayapi-webview-find-in-page-overlay-element';
 import AyapiWebviewFindInPageElement from './ayapi-webview-find-in-page-element';
 
 class AyapiWebviewElement extends HTMLElement {
@@ -43,7 +42,6 @@ class AyapiWebviewElement extends HTMLElement {
     );
     
     this.createWebviewElement();
-    this.createOverlayElement();
   }
   
   createWebviewElement() {
@@ -101,13 +99,6 @@ class AyapiWebviewElement extends HTMLElement {
     webview.setAttribute('preload', path.join(__dirname, 'preload.js'));
     this.appendChild(webview);
     this.webview = webview;
-  }
-  
-  createOverlayElement() {
-    let overlay = document.createElement('div');
-    overlay.classList.add('ayapi-webview-overlay');
-    this.appendChild(overlay);
-    this.overlay = overlay;
   }
   
   attachedCallback() {
@@ -173,10 +164,6 @@ class AyapiWebviewElement extends HTMLElement {
       footer.focus();
     }
     
-    let overlayChild = new AyapiWebviewFindInPageOverlayElement();
-    overlayChild.initialize();
-    this.overlay.appendChild(overlayChild);
-    
     this.subscriptions.add(
       this.emitter.on('ipc-message', ({channel, args}) => {
         if (!channel.startsWith('find-in-page:')) {
@@ -188,10 +175,6 @@ class AyapiWebviewElement extends HTMLElement {
             footer.current = current + 1;
             footer.total = total;
           break;
-          case 'updateOverlay':
-            overlayChild.update(args[0]);
-            overlayChild.show();
-          break;
         }
       })
     );
@@ -199,7 +182,6 @@ class AyapiWebviewElement extends HTMLElement {
       this.emitter.on('dom-ready', () => {
         footer.current = 0;
         footer.total = 0;
-        overlayChild.hide();
       })
     );
     this.subscriptions.add(
@@ -211,7 +193,6 @@ class AyapiWebviewElement extends HTMLElement {
       footer.onDidCancel(() => {
         this.focus();
         footer.hide();
-        overlayChild.hide();
         this.webview.send('clearFound');
       })
     );

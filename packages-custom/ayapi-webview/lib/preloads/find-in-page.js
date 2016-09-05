@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
   findInPage.on('did-find', (state) => {
     ipcRenderer.sendToHost('find-in-page:found', state);
   });
-  findInPage.on('did-change-highlight', (state) => {
-    ipcRenderer.sendToHost('find-in-page:updateOverlay', state);
-  });
   ipcRenderer.on('find', (ev, options) => {
     findInPage.find(options);
   });
