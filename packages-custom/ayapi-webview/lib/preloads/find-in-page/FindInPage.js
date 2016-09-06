@@ -16,14 +16,20 @@ class FindInPage extends EventEmitter {
     this.registerElements();
   }
   registerElements() {
-    document.registerElement(`${elementName}-start`, {
-      extends: 'span',
-      prototype: Object.create(HTMLSpanElement.prototype)
-    });
-    document.registerElement(`${elementName}-end`, {
-      extends: 'span',
-      prototype: Object.create(HTMLSpanElement.prototype)
-    });
+    try {
+      document.registerElement(`${elementName}-start`, {
+        extends: 'span',
+        prototype: Object.create(HTMLSpanElement.prototype)
+      });
+      document.registerElement(`${elementName}-end`, {
+        extends: 'span',
+        prototype: Object.create(HTMLSpanElement.prototype)
+      });
+    } catch(err) {
+      if (!err.message.includes('already registered')) {
+        throw err;
+      }
+    }
   }
   find(options) {
     if (options.text !== this.text) {
