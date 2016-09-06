@@ -4,5 +4,6 @@
   ["disable-gpu-sandbox"],
   ["disable-direct-write"],
   ["disable-directwrite-for-ui"],
-  ["disable-smooth-scrolling"]
+  ["disable-smooth-scrolling"],
+  ["remote-debugging-port", "8111"]
 ]
