@@ -34,6 +34,7 @@ class Highlight extends EventEmitter {
       this.selection.addRange(this.range);
       
       this.focusAncestor(this.range.startContainer);
+      this.emit('did-change-selection');
     }
   }
   focusAncestor(target) {

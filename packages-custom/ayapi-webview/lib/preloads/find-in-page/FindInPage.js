@@ -184,7 +184,14 @@ class FindInPage extends EventEmitter {
       )
     });
     this.highlight = new Highlight(markerPair);
+    this.highlight.on('did-change-rects', rects => {
+      this.emit('did-change-rects', rects);
+    });
     this.highlight.once('did-change-rects', this.scrollToRect.bind(this));
+    
+    this.highlight.on('did-change-selection', () => {
+      this.emit('did-change-selection');
+    });
     
     if (!this.highlightElement) {
       const element = new HighlightElement();
