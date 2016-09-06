@@ -1,7 +1,7 @@
 "use strict";
 
 const {ipcRenderer} = require('electron');
-const FindInPage = require('./find-in-page/FindInPage');
+const FindInPage = require('mitzkal');
 
 document.addEventListener('DOMContentLoaded', function(event) {
   if (location.protocol == 'about:') {
