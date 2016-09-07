@@ -13,6 +13,8 @@
     "ctrl-r": "ayapi-webview:reload",
     "alt-left": "ayapi-webview:backward-history",
     "alt-right": "ayapi-webview:forward-history",
+    "ctrl-+": "ayapi-webview:zoom-in",
+    "ctrl--": "ayapi-webview:zoom-out",
     "ctrl-shift-i": "ayapi-webview:toggle-dev-tools",
     "f12": "ayapi-webview:toggle-dev-tools",
     "ctrl-f": "ayapi-webview:find-in-page"
