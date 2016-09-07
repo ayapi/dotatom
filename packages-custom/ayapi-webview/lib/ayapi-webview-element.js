@@ -190,6 +190,12 @@ class AyapiWebviewElement extends HTMLElement {
         footer.total = 0;
       })
     );
+    this.emitter.on('load-commit', (ev) => {
+      let {url, isMainFrame} = ev;
+      if (isMainFrame) {
+        footer.cancel();
+      }
+    });
     this.subscriptions.add(
       footer.onDidFindRequest((options) => {
         this.focus();
