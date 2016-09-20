@@ -50,6 +50,8 @@
 	'ctrl-shift-right': 'editor:select-to-next-subword-boundary'
 	'ctrl-backspace': 'editor:delete-to-beginning-of-subword'
 	'ctrl-delete': 'editor:delete-to-end-of-subword'
+	'shift-alt-down': 'editor:add-selection-below'
+	'shift-alt-up': 'editor:add-selection-above'
 	
 'atom-workspace atom-text-editor:not([mini])':
 	'ctrl-down': 'custom:editor-scroll-down'
