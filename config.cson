@@ -13,6 +13,7 @@
     ]
     packagesWithKeymapsDisabled: [
       "symbols-view"
+      "omnisharp-atom"
     ]
     projectHome: "/home/ayapi/.atom/packages-custom"
     themes: [
@@ -37,6 +38,8 @@
     showErrorPanel: false
   "markdown-preview":
     liveUpdate: false
+  "omnisharp-atom":
+    codeLens: false
   welcome:
     showOnStartup: false
   whitespace:

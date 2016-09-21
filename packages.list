@@ -1,6 +1,6 @@
-Stylus@3.0.0
 advanced-open-file@0.16.3
 atom-ternjs@0.15.0
+atom-typescript@10.1.6
 atom-yeoman@0.3.15
 autocomplete-css-with-stylus-support@1.0.0
 file-icons@1.7.18
@@ -11,6 +11,8 @@ language-patch@1.2.0
 language-pug@0.0.17
 linter@1.11.16
 monokai@0.18.0
+omnisharp-atom@0.30.7
+Stylus@3.0.0
 susave@0.4.0
 
 
