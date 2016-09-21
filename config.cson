@@ -23,6 +23,7 @@
   "cursor-blink-interval":
     cursorBlinkInterval: 1200
   editor:
+    fontSize: 14
     invisibles:
       cr: "v"
       eol: "｣"
