@@ -92,6 +92,7 @@ class AyapiWebviewElement extends HTMLElement {
     this.emitter.on('load-commit', ({url, isMainFrame}) => {
       if (!isMainFrame) return;
       this.zoom = 0;
+      webview.insertCSS(`html{ background:#fff }`);
     });
     
     webview.setAttribute('src', 'about:blank');
