@@ -19,14 +19,7 @@
     themes: [
       "ayapi-ui"
       "monokai"
-    ],
-    customFileTypes:
-      'text.xml': [
-        'wxs',
-        'wxl'
-      ]
-  "cursor-blink-interval":
-    cursorBlinkInterval: 1200
+    ]
   editor:
     fontSize: 14
     invisibles:
