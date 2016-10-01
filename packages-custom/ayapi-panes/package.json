@@ -9,7 +9,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
-    "test": "atom --test ./spec 2> /dev/null"
+    "test": "atom --test ./spec"
   },
   "atomTestRunner": "./test-runner",
   "devDependencies": {
@@ -17,6 +17,8 @@
     "babel-core": "^6.13.2",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.11.5",
-    "babel-preset-power-assert": "^1.0.0"
+    "babel-preset-power-assert": "^1.0.0",
+    "fs-plus": "^2.9.2",
+    "power-assert": "^1.4.1"
   }
 }
