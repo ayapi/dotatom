@@ -6,6 +6,11 @@
     autocompleteSmartQuotes: false
   core:
     automaticallyUpdate: false
+    customFileTypes:
+      "text.xml": [
+        "wxs"
+        "wxl"
+      ]
     disabledPackages: [
       "spell-check"
       "tree-view"
