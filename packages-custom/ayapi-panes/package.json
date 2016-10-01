@@ -1,0 +1,22 @@
+{
+  "name": "ayapi-panes",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "pane manipulation",
+  "keywords": [],
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "scripts": {
+    "test": "atom --test ./spec 2> /dev/null"
+  },
+  "atomTestRunner": "./test-runner",
+  "devDependencies": {
+    "atom-mocha-test-runner": "^0.2.2",
+    "babel-core": "^6.13.2",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.11.5",
+    "babel-preset-power-assert": "^1.0.0"
+  }
+}
