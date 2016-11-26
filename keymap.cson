@@ -2,6 +2,14 @@
 	'ctrl-shift-w': 'unset!'
 	'ctrl-alt-i': 'unset!'
 	'ctrl-alt-o': 'unset!'
+	# alt-= on JIS
+	'alt-_': 'custom:split-down-and-new-editor'
+	'alt-|': 'custom:split-global-right-and-new-editor'
+	'ctrl-h': 'project-find:show'
+	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
+	'ctrl-q': 'window:close'
+	'ctrl-shift-i': 'window:toggle-dev-tools'
+	'ctrl-o': 'advanced-open-file:toggle'
 
 'body':
 	'ctrl-tab ^ctrl': 'unset!'
@@ -57,16 +65,6 @@
 	'ctrl-down': 'custom:editor-scroll-down'
 	'ctrl-up': 'custom:editor-scroll-up'
 
-'atom-workspace':
-	# alt-= on JIS
-	'alt-_': 'custom:split-down-and-new-editor'
-	'alt-|': 'custom:split-global-right-and-new-editor'
-	'ctrl-h': 'project-find:show'
-	'ctrl-shift-f': 'fuzzy-finder:toggle-file-finder'
-	'ctrl-q': 'window:close'
-	'ctrl-shift-i': 'window:toggle-dev-tools'
-	'ctrl-o': 'advanced-open-file:toggle'
-	
 'atom-workspace atom-pane':
 	'alt-left': 'ayapi-panes:focus-pane-on-left'
 	'alt-right': 'ayapi-panes:focus-pane-on-right'
@@ -87,8 +85,6 @@
 'atom-workspace .ayapi-term .xterm':
 	'ctrl-down': 'ayapi-term:scroll-down'
 	'ctrl-up': 'ayapi-term:scroll-up'
-
-'atom-workspace .ayapi-term .xterm':
 	'alt-left': 'ayapi-panes:focus-pane-on-left'
 	'alt-right': 'ayapi-panes:focus-pane-on-right'
 	'alt-up': 'ayapi-panes:focus-pane-above'
