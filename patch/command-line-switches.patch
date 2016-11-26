@@ -1,20 +1,18 @@
-diff -urN app_unpacked/src/main-process/main.js app_modified/src/main-process/main.js
---- app_unpacked/src/main-process/main.js	2016-08-22 15:59:15.243882300 +0900
-+++ app_modified/src/main-process/main.js	2016-08-22 16:17:22.304936900 +0900
-@@ -45,6 +45,16 @@
-       });
-       return;
-     }
-+    
-+    try {
-+      var switches = require(path.join(process.env.ATOM_HOME, 'switches.json'));
-+      switches.forEach(function (sw) {
-+        if (sw.length > 0) {
-+          app.commandLine.appendSwitch.apply(app.commandLine, sw);
-+        }
-+      });
-+    } catch(e){}
-+    
-     app.setAppUserModelId('com.squirrel.atom.atom');
-     addPathToOpen = function(event, pathToOpen) {
-       event.preventDefault();
+--- app_unpacked/src/main-process/start.js	2016-11-26 15:33:42.639399618 +0900
++++ app_modified/src/main-process/start.js	2016-11-26 15:39:05.199403191 +0900
+@@ -25,6 +25,15 @@
+   const args = parseCommandLine(process.argv.slice(1))
+   setupAtomHome(args)
+   setupCompileCache()
++  
++  try {
++    var switches = require(path.join(process.env.ATOM_HOME, 'switches.json'));
++    switches.forEach(function (sw) {
++      if (sw.length > 0) {
++        app.commandLine.appendSwitch.apply(app.commandLine, sw);
++      }
++    });
++  } catch(e){}
+ 
+   if (handleStartupEventWithSquirrel()) {
+     return
