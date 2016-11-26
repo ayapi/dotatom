@@ -30,3 +30,23 @@ apm config set python 【クリップボードからペースト】
 npm config get msvs_version | clip
 apm config set msvs_version 【クリップボードからペースト】
 ```
+
+## update atom
+
+atom自体をアップデートすると、  
+native moduleをっかってるパッケージがエラーになることがょくぁる  
+
+そのだめっぽぃパッケージがぁるディレクトリにぃってから、
+
+```sh
+apm rebuild
+```
+
+をゃる
+
+もし、アプデしてから `rebuild` をゃるょり前にatomを起動しちゃった場合、  
+`rebuild` をしてもまだエラーが出続けることがぁる
+
+その場合atomのdevtoolsを起動して、  
+local storageの一覧から「incompatible package」みたぃな文字列が  
+キーに含まれてるレコードを探して、削除して、atomを再起動する
