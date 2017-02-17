@@ -224,8 +224,16 @@ atom.commands.add(
   }
 );
 
-atom.commands.add('atom-workspace', 'custom:maximizeOnDualDisplay', () => {
+atom.commands.add('atom-workspace', 'window:maximize-on-dual-display', () => {
   let displaySize = {w: 1920, h: 1200};
   atom.setPosition(0, 0);
   atom.setSize(displaySize.h * 2, displaySize.w);
+});
+
+atom.commands.add('atom-workspace', 'window:maximize', () => {
+  atom.getCurrentWindow().maximize();
+});
+
+atom.commands.add('atom-workspace', 'window:unmaximize', () => {
+  atom.getCurrentWindow().unmaximize();
 });
