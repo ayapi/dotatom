@@ -2,6 +2,7 @@
 
 const path = require('path');
 const os = require('os');
+const electron = require('electron');
 
 function requireAtomCoreModule(name) {
   return require(path.join(atom.packages.resourcePath, 'src', name));
@@ -228,6 +229,25 @@ atom.commands.add('atom-workspace', 'window:maximize-on-dual-display', () => {
   let displaySize = {w: 1920, h: 1200};
   atom.setPosition(0, 0);
   atom.setSize(displaySize.h * 2, displaySize.w);
+});
+
+atom.commands.add('atom-workspace', 'window:maximize-on-external-display', () => {
+  let displays = electron.screen.getAllDisplays();
+  if (displays.length < 2) {
+    return;
+  }
+  let bounds = displays[1].bounds
+  atom.setPosition(bounds.x, bounds.y);
+  
+  if (displays.length > 2) {
+    let externalDisplays = displays.slice(1)
+    if (externalDisplays.map(d => (d.bounds.y)).every((curr, i, arr) => (arr[0] === curr))) {
+      let w = externalDisplays.reduce((prev, curr) => (prev + curr.bounds.width), 0);
+      atom.setSize(w, bounds.height);
+      return;
+    }
+  }
+  atom.setSize(bounds.width, bounds.height);
 });
 
 atom.commands.add('atom-workspace', 'window:maximize', () => {
