@@ -57,8 +57,8 @@ function getNeighborPaneViewInDirection(direction) {
       return cursor.isVisible();
     });
     if (cursor) {
-      let cursorRect = cursor.getPixelRect();
       let editorView = atom.views.getView(item);
+      let cursorRect = editorView.pixelPositionForScreenPosition(cursor.getScreenPosition())
       let editorRect = editorView.getBoundingClientRect();
       let editorScroll = {
         top: editorView.getScrollTop(),
