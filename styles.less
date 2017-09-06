@@ -94,3 +94,13 @@ atom-pane.active ayapi-webview {
   width: 120px;
   min-width: 120px;
 }
+
+#linter-tooltip {
+  margin: 0;
+  linter-message {
+    padding: 0;
+    &:last-child::before {
+      display: none;
+    }
+  }
+}

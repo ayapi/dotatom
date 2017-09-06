@@ -38,8 +38,10 @@
     undoGroupingInterval: 1
   "exception-reporting":
     userId: "d82875f5-8c23-7271-71b1-89655f81fd84"
-  linter:
-    showErrorPanel: false
+  linter: {}
+  "linter-ui-default":
+    statusBarRepresents: "Entire Project"
+    tooltipFollows: "Keyboard"
   "markdown-preview":
     liveUpdate: false
   "omnisharp-atom":
