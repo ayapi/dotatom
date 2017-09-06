@@ -161,7 +161,8 @@ atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', 
     applicationDelegate: pane.applicationDelegate,
     notificationManager: pane.notificationManager,
     deserializerManager: pane.deserializerManager,
-    config: pane.config
+    config: pane.config,
+    viewRegistry: atom.views
   });
   
   let p = pane;
@@ -179,7 +180,7 @@ atom.commands.add('atom-workspace', 'custom:split-global-right-and-new-editor', 
     let newAxis = new PaneAxis({
       orientation: 'horizontal',
       children: [p]
-    });
+    }, atom.views);
     parent.replaceChild(p, newAxis);
     newAxis.setFlexScale(1);
     p.setFlexScale(1);
@@ -208,7 +209,7 @@ atom.commands.add(
       let siblings = pane.parent.children;
       let panes = siblings;
       if (siblings.length <= 1) {
-        panes = atom.workspace.getPanes();
+        panes = atom.workspace.getCenter().getPanes();
       }
       let index = panes.indexOf(pane);
       let nextIndex = index === 0 ? 1 : index - 1;
