@@ -53,9 +53,7 @@ function getNeighborPaneViewInDirection(direction) {
   let boxForintersect = box;
   let item = pane.getActiveItem();
   if (item && item.constructor.name == 'TextEditor' && item.cursors.length > 0) {
-    let cursor = item.cursors.find((cursor) => {
-      return cursor.isVisible();
-    });
+    let cursor = item.cursors[0];
     if (cursor) {
       let editorView = atom.views.getView(item);
       let cursorRect = editorView.pixelPositionForScreenPosition(cursor.getScreenPosition())
