@@ -11,6 +11,10 @@ community/atom でインストールしてれば `/usr/lib/atom`
 ```
 %userprofile%\AppData\Local\atom\app-【atomバージョン】\
 ```
+
+## Mac
+たぶん `/Applications/Atom.app/Contents` か、 `~/Applications/Atom.app/Contents`
+
 以下ゎこのpathを`atom_installed_dir`とかく
 
 # patchのっくりかた
@@ -36,15 +40,13 @@ rm -rf app_modified
 
 # patchをぜんぶ一気にぁてるゃりかた
 
-## Arch Linux
-community/atom でインストールしてる前提
+## Arch Linux, Mac
 
-確認事項
+```sh
+cd atom_installed_dir
+```
 
-1. /usr/lib/atom にインストールされてる
-2. app.asarとかなくて/usr/lib/atom直下にsrcがぁる
-
-満たしてれば
+のぁとに、
 
 ```sh
 ~/.atom/patch/patcher.zsh
