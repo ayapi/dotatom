@@ -17,17 +17,15 @@ if (os.platform() == 'win32' && os.release().startsWith('10.')) {
 }
 
 let cursorBlinkInterval = 1000;
-TextEditorComponent.prototype.cursorBlinkPeriod = cursorBlinkInterval;
 function setCursorBlinkInterval(editor) {
-  // ref. https://github.com/olmokramer/atom-cursor-blink-interval
   let editorView = atom.views.getView(editor);
-  if(!editorView.component || !editorView.component.presenter){
+  if(!editorView.component){
     return;
   }
-  let editorPresenter = editorView.component.presenter;
-  editorPresenter.stopBlinkingCursors(true);
-  editorPresenter.cursorBlinkPeriod = cursorBlinkInterval;
-  editorPresenter.startBlinkingCursors();
+  let editorComponent = editorView.component;
+  editorComponent.stopCursorBlinking(true);
+  editorComponent.props.cursorBlinkPeriod = cursorBlinkInterval;
+  editorComponent.startCursorBlinking();
 }
 atom.workspace.observeTextEditors(setCursorBlinkInterval);
 
