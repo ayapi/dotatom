@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "ptyw.js": "git://github.com/ayapi/ptyw.js.git",
-    "xterm": "^1.1.3"
+    "xterm": "^2.9.2"
   },
   "deserializers": {
     "AyapiTermElement": "deserializeAyapiTermElement"
