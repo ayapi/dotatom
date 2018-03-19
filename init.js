@@ -249,6 +249,16 @@ atom.commands.add('atom-workspace', 'window:maximize-on-external-display', () =>
   atom.setSize(bounds.width, bounds.height);
 });
 
+atom.commands.add('atom-workspace', 'window:set-window-size-for-4k-display-low-gpu', () => {
+  const displays = electron.screen.getAllDisplays()
+  const display = displays.find(display => display.size.width === 3840)
+  const bounds = display.bounds
+
+  atom.setPosition(bounds.x, bounds.y)
+  const displaySize = {w: 3084, h: 2042}
+  atom.setSize(displaySize.w, displaySize.h)
+})
+
 atom.commands.add('atom-workspace', 'window:maximize', () => {
   atom.getCurrentWindow().maximize();
 });
